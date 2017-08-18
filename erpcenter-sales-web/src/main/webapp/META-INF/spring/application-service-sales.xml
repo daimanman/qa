@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	<context:annotation-config />
+	<bean id="msgInfoService" class="com.man.erpcenter.sales.biz.service.MsgInfoServiceImpl" />
+	
+	<bean id="qqInfoManager" class="com.man.erpcenter.sales.biz.manager.QqInfoManager">
+		<property name="baseInfoUrl" value="${qq.baseinfo.url}"/>
+		<property name="emotInfoUrl" value="${qq.emotinfo.url}"/>
+		<property name="msgInfoUrl" value="${qq.msginfo.url}"/>
+		<property name="photoInfoUrl" value="${qq.photoinfo.url}"/>
+		<property name="imgInfoUrl" value="${qq.imginfo.url}"/>
+		<property name="visitUrl" value="${qq.visitinfo.url}"/>
+		
+	</bean>
+	
+	<bean id="startDoJob" class="com.man.erpcenter.sales.biz.manager.StartDoJob">
+	</bean>
+	
+	<!-- -->
+	<bean id="qqPrimaryKeyManager" class="com.man.erpcenter.sales.biz.manager.QqPrimaryKeyManager">
+	</bean>
+	 
+	
+	
+</beans>

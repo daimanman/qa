@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.erpcenter.sales.biz.mapper.QphotoImgMapper" >
+  <resultMap id="BaseResultMap" type="com.man.erpcenter.sales.client.po.QphotoImg" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="batchId" property="batchid" jdbcType="VARCHAR" />
+    <result column="browser" property="browser" jdbcType="VARCHAR" />
+    <result column="cameratype" property="cameratype" jdbcType="VARCHAR" />
+    <result column="cp_flag" property="cpFlag" jdbcType="VARCHAR" />
+    <result column="cp_x" property="cpX" jdbcType="VARCHAR" />
+    <result column="cp_y" property="cpY" jdbcType="VARCHAR" />
+    <result column="forum" property="forum" jdbcType="VARCHAR" />
+    <result column="frameno" property="frameno" jdbcType="VARCHAR" />
+    <result column="height" property="height" jdbcType="VARCHAR" />
+    <result column="is_video" property="isVideo" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="owner" property="owner" jdbcType="VARCHAR" />
+    <result column="ownername" property="ownername" jdbcType="VARCHAR" />
+    <result column="photocubage" property="photocubage" jdbcType="VARCHAR" />
+    <result column="phototype" property="phototype" jdbcType="VARCHAR" />
+    <result column="picrefer" property="picrefer" jdbcType="VARCHAR" />
+    <result column="platformId" property="platformid" jdbcType="VARCHAR" />
+    <result column="platformSubId" property="platformsubid" jdbcType="VARCHAR" />
+    <result column="pre" property="pre" jdbcType="VARCHAR" />
+    <result column="rawshoottime" property="rawshoottime" jdbcType="VARCHAR" />
+    <result column="uploadtime" property="uploadtime" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="width" property="width" jdbcType="VARCHAR" />
+    <result column="photo_id" property="photoId" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="desc" property="desc" jdbcType="LONGVARCHAR" />
+    <result column="origin_url" property="originUrl" jdbcType="LONGVARCHAR" />
+    <result column="poiname" property="poiname" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <insert id="insertBatchImgs" parameterType="map" useGeneratedKeys="true" keyProperty="imgId" >
+    insert into qphoto_img (
+    	batchId, 
+    	browser, 
+      	cameratype, 
+      	cp_flag, 
+      	cp_x, 
+      	cp_y, 
+      	forum, 
+      	frameno, 
+      	height, 
+      	is_video, 
+      	modifytime, 
+      	`name`, 
+      	`owner`, 
+      	ownername, 
+      	photocubage, 
+      	phototype, 
+      	picrefer, 
+      	platformId, 
+      	platformSubId, 
+      	pre, 
+      	rawshoottime, 
+      	uploadtime, 
+      	url, 
+      	width, 
+      	photo_id, 
+      	uid, 
+      	`desc`, 
+      	origin_url, 
+      	poiName,
+      	create_gmt
+      )
+    values 
+    	<foreach collection="photoList" item="img" index="index" separator=",">
+    (
+    	#{img.batchId,jdbcType=VARCHAR}, 
+    	#{img.browser,jdbcType=VARCHAR}, 
+      	#{img.cameratype,jdbcType=VARCHAR}, 
+      	#{img.cp_flag,jdbcType=VARCHAR}, 
+      	#{img.cp_x,jdbcType=VARCHAR}, 
+      	#{img.cp_y,jdbcType=VARCHAR}, 
+      	#{img.forum,jdbcType=VARCHAR}, 
+      	#{img.frameno,jdbcType=VARCHAR}, 
+      	#{img.height,jdbcType=VARCHAR}, 
+      	#{img.is_video,jdbcType=VARCHAR}, 
+      	#{img.modifytime,jdbcType=VARCHAR}, 
+      	#{img.name,jdbcType=VARCHAR}, 
+      	#{img.owner,jdbcType=VARCHAR}, 
+      	#{img.ownername,jdbcType=VARCHAR}, 
+      	#{img.photocubage,jdbcType=VARCHAR}, 
+      	#{img.phototype,jdbcType=VARCHAR}, 
+      	#{img.picrefer,jdbcType=VARCHAR}, 
+      	#{img.platformId,jdbcType=VARCHAR}, 
+      	#{img.platformSubId,jdbcType=VARCHAR}, 
+      	#{img.pre,jdbcType=VARCHAR}, 
+      	#{img.rawshoottime,jdbcType=VARCHAR}, 
+      	#{img.uploadtime,jdbcType=VARCHAR}, 
+      	#{img.url,jdbcType=VARCHAR}, 
+      	#{img.width,jdbcType=VARCHAR}, 
+      	#{photoId,jdbcType=BIGINT}, 
+      	#{uid,jdbcType=VARCHAR}, 
+      	#{img.desc,jdbcType=LONGVARCHAR}, 
+      	#{img.origin_url,jdbcType=LONGVARCHAR}, 
+      	#{img.poiName,jdbcType=LONGVARCHAR},
+      	now()
+      )
+      </foreach>
+  </insert>
+  
+</mapper>

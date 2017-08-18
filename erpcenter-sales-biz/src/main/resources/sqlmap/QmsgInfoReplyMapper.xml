@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.erpcenter.sales.biz.mapper.QmsgInfoReplyMapper" >
+  <resultMap id="BaseResultMap" type="com.man.erpcenter.sales.client.po.QmsgInfoReply" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="time" property="time" jdbcType="VARCHAR" />
+    <result column="nick" property="nick" jdbcType="VARCHAR" />
+    <result column="msg_id" property="msgId" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.man.erpcenter.sales.client.po.QmsgInfoReply" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <insert id="insertBatchReplys" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+    insert into qmsg_info_reply (
+    	time, 
+    	nick, 
+        msg_id, 
+        content,
+        create_gmt
+        )
+    values 
+    	<foreach collection="replyList" item="reply" separator=",">
+	    	( 
+	    	#{reply.time,jdbcType=VARCHAR}, 
+	    	#{reply.nick,jdbcType=VARCHAR}, 
+	      	#{msgInfoId,jdbcType=BIGINT}, 
+	      	#{reply.content,jdbcType=LONGVARCHAR},
+	      	now()
+	      	)
+    	</foreach>
+  </insert>
+  
+  
+  <insert id="insertBatchReplysByList" parameterType="java.util.List" useGeneratedKeys="true">
+    insert into qmsg_info_reply (
+    	time, 
+    	nick, 
+        msg_id, 
+        content,
+        create_gmt
+        )
+    values 
+    	<foreach collection="replyList" item="reply" separator=",">
+	    	( 
+	    	#{reply.time,jdbcType=VARCHAR}, 
+	    	#{reply.nick,jdbcType=VARCHAR}, 
+	      	#{reply.msgId,jdbcType=BIGINT}, 
+	      	#{reply.content,jdbcType=LONGVARCHAR},
+	      	now()
+	      	)
+    	</foreach>
+  </insert>
+</mapper>

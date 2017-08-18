@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<group name="dubbo">
+		<property name="zk.address" defaultValue="192.168.1.202:2181"			description="dubbo注册的zookeeper地址" />
+		<property name="zk.port" defaultValue="-1" description="dubbo服务使用的端口号" />
+		<property name="export.dubbo.timeout" defaultValue="5000"			description="提供dubbo服务的默认超时时间" />
+		<property name="export.dubbo.version" defaultValue="1.0.0.test"			description="暴露dubbo的版本号" />
+		<property name="dubbo.retries" defaultValue="0" description="dubbo调用不重试" />
+		<property name="consumer.dubbo.timeout" defaultValue="5000"			description="使用其他dubbo服务的超市时间" />
+		<property name="consumer.dubbo.check" defaultValue="false"			description="启东时是否强依赖其他服务，如果true那么依赖的服务必须先启动；如果false,其他服务可以不存在，但是调用的时候，如果服务依然不存在，则报错" />
+		<property name="consumer.user.dubbo.version" defaultValue="1.0.0.test"			description="消费user的dubbo的版本号" />
+		<property name="consumer.supplier.dubbo.version" defaultValue="1.0.0.test"			description="资源中心的dubbo的版本号" />
+		<property name="consumer.idgen.dubbo.version" defaultValue="1.0.0.test"			description="消费id generator的版本" />
+		<property name="zk.client.timeout" defaultValue="60000"			/>
+		<property name="zk.connect.timeout" defaultValue="60000"			/> 
+		<property name="solr.zk.address" defaultValue="192.168.1.147:2181"			/> 
+	</group>
+	
+	<group name="redis">
+		<property name="redis.host" defaultValue="192.168.0.162"/>
+		<property name="redis.port" defaultValue="6379"/>
+		<property name="redis.default.db" defaultValue="0"/>
+		<property name="redis.timeout" defaultValue="100000"/>
+		<property name="redis.maxActive" defaultValue="300"/>
+		<property name="redis.maxIdle" defaultValue="100"/>
+		<property name="redis.maxWait" defaultValue="1000"/>
+		<property name="redis.testOnBorrow" defaultValue="true"/>
+	</group>
+
+	<group name="mysql">
+		<property name="app.name" defaultValue="erpcenter"			description="应用名称" />
+		<property name="jdbc.url.product"			defaultValue="jdbc:mysql://192.168.1.157/yihg_erp_product?autoReconnect=true&amp;useUnicode=true&amp;characterset=utf8mb4&amp;allowMultiQueries=true"			description="数据库链接url" />
+		<property name="jdbc.url.sys"			defaultValue="jdbc:mysql://192.168.1.157/yihg_erp_user?autoReconnect=true&amp;useUnicode=true&amp;characterset=utf8mb4&amp;allowMultiQueries=true"			description="数据库链接url" />
+		<property name="jdbc.url.basic"			defaultValue="jdbc:mysql://192.168.1.157/yihg_erp_basic?autoReconnect=true&amp;useUnicode=true&amp;characterset=utf8mb4&amp;allowMultiQueries=true"			description="数据库链接url" />
+		<property name="jdbc.url.sales"			defaultValue="jdbc:mysql://192.168.1.157/yihg_erp_sales?autoReconnect=true&amp;useUnicode=true&amp;characterset=utf8mb4&amp;allowMultiQueries=true"			description="数据库链接url" />
+		<property name="jdbc.username" defaultValue="b2c"			description="数据库用户名" />
+		<property name="jdbc.password" defaultValue="b2c123"			description="数据库密码" />
+		<property name="log.home" defaultValue="/home/admin/logs/erpcenter"			description="日志输出目录" />
+	</group>
+
+	<group name="mq">
+		<property name="rocketmq.server.name" defaultValue="192.168.1.149:9876"			description="rocketmq的注册中心地址" />
+		<property name="rocketmq.consumer.group" defaultValue="erpcenter_consume_group" />
+		<property name="rocketmq.domain.name" defaultValue="192.168.1.149:9876" />
+	</group>
+
+	<group name="idgen">
+		<property name="idgen.allocount" defaultValue="100"			description="idgen" />
+		<property name="idgen.domain" defaultValue="erpcenter"			description="idgen" />
+	</group>
+	<group name="redis">
+		<property name="redis-haAddress" defaultValue="redis05.jiuxiulvxing.net:26383,redis06.jiuxiulvxing.net:26383,redis07.jiuxiulvxing.net:26383,redis08.jiuxiulvxing.net:26383,redis09.jiuxiulvxing.net:26383,redis10.jiuxiulvxing.net:26383,redis11.jiuxiulvxing.net:26383,redis12.jiuxiulvxing.net:26383,redis13.jiuxiulvxing.net:26383,redis14.jiuxiulvxing.net:26383,redis15.jiuxiulvxing.net:26383,redis16.jiuxiulvxing.net:26383,redis17.jiuxiulvxing.net:26383,redis18.jiuxiulvxing.net:26383,redis19.jiuxiulvxing.net:26383,redis20.jiuxiulvxing.net:26383"	description="redis" />
+		<property name="redis-redisInitParam" defaultValue="timeout=30000;pool_size=50;"			description="idgen" />
+	</group>
+	<script>
+		<generate template="config.properties.vm" destfile="WEB-INF/config.properties"
+				  charset="UTF-8" />
+		<generate template="logback.xml.vm" destfile="WEB-INF/logback.xml"
+				  charset="UTF-8" />
+		<generate template="web.xml.vm" destfile="WEB-INF/web.xml"
+				  charset="UTF-8" />
+	</script>
+</config>
+

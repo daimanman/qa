@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.erpcenter.sales.biz.mapper.QemotInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.man.erpcenter.sales.client.po.QemotInfo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="cmtnum" property="cmtnum" jdbcType="INTEGER" />
+    <result column="createTime" property="createtime" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="VARCHAR" />
+    <result column="editMask" property="editmask" jdbcType="VARCHAR" />
+    <result column="fwdnum" property="fwdnum" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="pictotal" property="pictotal" jdbcType="INTEGER" />
+    <result column="right" property="right" jdbcType="VARCHAR" />
+    <result column="rt_sum" property="rtSum" jdbcType="VARCHAR" />
+    <result column="secret" property="secret" jdbcType="VARCHAR" />
+    <result column="tid" property="tid" jdbcType="VARCHAR" />
+    <result column="ugc_right" property="ugcRight" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="wbid" property="wbid" jdbcType="VARCHAR" />
+    <result column="lbs_id" property="lbsId" jdbcType="VARCHAR" />
+    <result column="lbs_idname" property="lbsIdname" jdbcType="VARCHAR" />
+    <result column="lbs_name" property="lbsName" jdbcType="VARCHAR" />
+    <result column="lbs_pos_x" property="lbsPosX" jdbcType="VARCHAR" />
+    <result column="lbs_pos_y" property="lbsPosY" jdbcType="VARCHAR" />
+    <result column="source_name" property="sourceName" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <insert id="insertQemotInfo" parameterType="map" useGeneratedKeys="true" keyProperty="qemotInfoId">
+    insert into qemot_info (
+      cmtnum, 
+      createTime, 
+      created_time, 
+      editMask, 
+      fwdnum, 
+      name, 
+      pictotal, 
+      `right`, 
+      rt_sum, 
+      secret, 
+      tid, 
+      ugc_right, 
+      uid, 
+      wbid, 
+      lbs_id, 
+      lbs_idname,
+      lbs_name, 
+      lbs_pos_x, 
+      lbs_pos_y, 
+      source_name, 
+      content,
+      create_gmt
+      )
+    values (
+      #{cmtnum}, 
+      #{createTime}, 
+      #{created_time}, 
+      #{editMask}, 
+      #{fwdnum}, 
+      #{name},
+      #{pictotal},
+      #{right}, 
+      #{rt_sum},
+      #{secret},
+      #{tid}, 
+      #{ugc_right},
+      #{uin},
+      #{wbid}, 
+      #{lbs.id},
+      #{lbs.idname},
+      #{lbs.name}, 
+      #{lbs.pos_x},
+      #{lbs.pos_y},
+      #{source_name}, 
+      #{content},
+      now()
+      )
+  </insert>
+  
+  <update id="updateEmotTotalNum" parameterType="com.man.erpcenter.sales.client.mqvo.QemotInfoMqVo">
+  	<![CDATA[
+  		update quser_info a set a.emot_num = #{totalNum},a.flag = 1 where a.id = #{querInfoId}
+  	]]>
+  </update>
+</mapper>

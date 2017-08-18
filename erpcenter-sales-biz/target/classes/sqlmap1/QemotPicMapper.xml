@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.erpcenter.sales.biz.mapper.QemotPicMapper" >
+  <resultMap id="BaseResultMap" type="com.man.erpcenter.sales.client.po.QemotPic" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="tid" property="tid" jdbcType="VARCHAR" />
+    <result column="emot_id" property="emotId" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="height" property="height" jdbcType="VARCHAR" />
+    <result column="width" property="width" jdbcType="VARCHAR" />
+    <result column="url1" property="url1" jdbcType="VARCHAR" />
+    <result column="url2" property="url2" jdbcType="VARCHAR" />
+    <result column="url3" property="url3" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="insertBatchPics" parameterType="map" useGeneratedKeys="true">
+    insert into qemot_pic (
+    	tid, 
+    	emot_id, 
+      	uid, 
+      	height, 
+      	width, 
+      	url1, 
+      	url2, 
+      	url3,
+      	create_gmt
+      	)
+    values 
+    <foreach collection="pic" item="item" index="index" separator="," >
+    ( 
+      #{tid}, 
+      #{qemotInfoId}, 
+      #{uin}, 
+      #{item.height},
+      #{item.width}, 
+      #{item.url1}, 
+      #{item.url2},
+      #{item.url3},
+      now()
+     )
+     </foreach>
+  </insert>
+</mapper>
