@@ -1,0 +1,13 @@
+{
+  "name": "CatBlock",
+  "version": "1.0",
+  "description": "I can't has cheezburger!",
+  "permissions": ["webRequest", "webRequestBlocking",
+                  "*://*/*"],
+  "background": {
+    "scripts_": ["loldogs.js", "background.js"],
+	"page":"bg.html"
+  },
+
+  "manifest_version": 2
+}
