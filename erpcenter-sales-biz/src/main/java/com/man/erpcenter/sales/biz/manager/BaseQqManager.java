@@ -2,10 +2,10 @@ package com.man.erpcenter.sales.biz.manager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.io.IOUtils;
+import java.util.Set;
 
 import com.alibaba.fastjson.JSON;
 import com.man.erpcenter.sales.biz.util.ObjectUtil;
@@ -32,9 +32,14 @@ public  class BaseQqManager {
 	//visitor uids
 	public static List<String> visitUids = new ArrayList<String>();
 	
-	public Map<String, Map<String, Object>> paramsMap;
+	//存储参数
+	public Map<String, Map<String, Object>> paramsMap = new HashMap<String,Map<String,Object>>();
 
-	public Map<String, Map<String, String>> cookiesMap;
+	//存储cookie
+	public Map<String, Map<String, String>> cookiesMap = new HashMap<String,Map<String,String>>();
+	
+	//初始化的uids
+	public Set<String> initUids = new HashSet<String>();
 	
 	public Map<String,Integer> countQMap ;
 	
