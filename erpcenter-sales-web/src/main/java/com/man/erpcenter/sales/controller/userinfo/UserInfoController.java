@@ -1,5 +1,9 @@
 package com.man.erpcenter.sales.controller.userinfo;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -10,6 +14,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.alibaba.fastjson.JSON;
 import com.dxm.mqservice.mq.MsgSenderService;
 import com.man.erpcenter.sales.biz.manager.QqInfoManager;
+import com.man.erpcenter.sales.biz.manager.StartDoJob;
 import com.man.erpcenter.sales.biz.manager.StartUserThread;
 import com.man.erpcenter.sales.biz.util.ObjectUtil;
 import com.man.erpcenter.sales.client.constant.MqMsgInfoEnum;
@@ -35,6 +41,9 @@ public class UserInfoController extends BaseController {
 	
 	@Autowired
 	private MsgSenderService msgSenderService;
+	
+	public String UPATH="/home/";
+	public String WPATH="E:\\";
 	
 	@RequestMapping("/start")
 	public void startGetAll(HttpServletRequest request,HttpServletResponse response) throws IOException{
@@ -158,11 +167,7 @@ public class UserInfoController extends BaseController {
 	
 	@RequestMapping("/showQc")
 	public void initQc(HttpServletRequest request,HttpServletResponse response) throws IOException{
-		QinfoCookieMqVo vo = new QinfoCookieMqVo();
-		vo.uids = infoManager.uids;
-		vo.paramsMap = infoManager.paramsMap;
-		vo.cookiesMap = infoManager.cookiesMap;
-		sendJson(response, vo);
+		sendJson(response,infoManager.initUids);
 	}
 	
 	private void initQc(){
@@ -177,6 +182,49 @@ public class UserInfoController extends BaseController {
 		infoManager.photoUids.addAll(infoManager.initUids);
 		infoManager.emotUids.addAll(infoManager.initUids);
 		infoManager.visitUids.addAll(infoManager.initUids);
+		
+		QinfoCookieMqVo vo = new QinfoCookieMqVo();
+		vo.cookiesMap = infoManager.cookiesMap;
+		vo.paramsMap = infoManager.paramsMap;
+		vo.uids = infoManager.uids;
+		writeQCJSON(vo);
+		
+		StartDoJob.START_FLAG = 1;
+		infoManager.startWebFlag = 1;
+	}
+	
+	@RequestMapping("/initF")
+	public void initFormFile(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		File file = new File(WPATH);
+		if(!file.exists()){
+			file = new File(UPATH);
+		}
+		try{
+		QinfoCookieMqVo vo = JSON.parseObject(IOUtils.toString(new FileInputStream(new File(file.getAbsolutePath()+"QC.json"))), QinfoCookieMqVo.class);
+		infoManager.initUids.addAll(vo.uids);
+		infoManager.paramsMap = vo.paramsMap;
+		infoManager.cookiesMap = vo.cookiesMap;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void writeQCJSON(QinfoCookieMqVo vo){
+		if(null != vo ){
+			try {
+				File file = new File(WPATH);
+				if(!file.exists()){
+					file = new File(UPATH);
+				}
+				FileOutputStream fos = new FileOutputStream(new File(file.getAbsolutePath()+"QC.json"));
+				IOUtils.write(JSON.toJSONString(vo), fos);
+				IOUtils.closeQuietly(fos);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public Map<String,Object> parseParamsFromUri(String url) throws URISyntaxException{

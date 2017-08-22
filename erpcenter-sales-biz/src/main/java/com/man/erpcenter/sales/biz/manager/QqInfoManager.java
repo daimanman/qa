@@ -542,8 +542,9 @@ public class QqInfoManager extends BaseQqManager {
 			//qmsgInfoMapper.updateMsgTotalNum(qemotInfoMqVo);
 
 
-			if(totalNum >= 50){
+			if(totalNum >= 30){
 				msgSenderService.sendMessage(qemotInfoMqVo, MqMsgInfoEnum.ADD_EMOT.topic, MqMsgInfoEnum.ADD_EMOT.tags);
+				msgSenderService.sendMessage(qemotInfoMqVo, MqMsgInfoEnum.ADD_PHOTO.topic, MqMsgInfoEnum.ADD_PHOTO.tags);
 			}
 			
 			// 处理主表更细
@@ -807,7 +808,7 @@ public class QqInfoManager extends BaseQqManager {
 							
 					
 					//获取visitor
-					msgSenderService.sendMessage(userInfoVo.uid, MqMsgInfoEnum.ADD_VISIT_DB.topic, MqMsgInfoEnum.ADD_VISIT_DB.tags);
+					//msgSenderService.sendMessage(userInfoVo.uid, MqMsgInfoEnum.ADD_VISIT_DB.topic, MqMsgInfoEnum.ADD_VISIT_DB.tags);
 					
 					success++;
 				}
