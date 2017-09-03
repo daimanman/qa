@@ -34,6 +34,7 @@ public class UserInfoSolrManager extends SolrSearchCenterManager {
 			SolrDocumentList results =  resp.getResults();
 			solrSearchResult.setTotal(results.getNumFound());
 			solrSearchResult.setStart(results.getStart());
+			solrSearchResult.setRows(bizParams.getRows());
 			List<QuserInfoPo> datas = new ArrayList<QuserInfoPo>();
 			for(SolrDocument doc:results){
 				QuserInfoPo userInfo = new QuserInfoPo();
