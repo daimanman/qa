@@ -45,6 +45,7 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.man.erpcenter.common.utils.ObjectUtil;
 
 public class YhHttpUtil {
 

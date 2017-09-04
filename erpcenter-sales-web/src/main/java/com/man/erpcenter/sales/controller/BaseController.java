@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +16,7 @@ import org.apache.commons.io.IOUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.man.erpcenter.sales.biz.util.ConstaintsUtil;
-import com.man.erpcenter.sales.biz.util.ObjectUtil;
+import com.man.erpcenter.common.utils.ObjectUtil;
 
 public class BaseController {
 	/**
@@ -81,6 +79,7 @@ public class BaseController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}finally{
+				paramMap.put("start",(ObjectUtil.parseInt(paramMap.get("page"))-1)*ObjectUtil.parseInt(paramMap.get("rows")));
 				return paramMap;
 			}
 

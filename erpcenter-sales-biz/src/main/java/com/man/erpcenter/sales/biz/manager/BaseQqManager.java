@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.alibaba.fastjson.JSON;
-import com.man.erpcenter.sales.biz.util.ObjectUtil;
+import com.man.erpcenter.common.utils.ObjectUtil;
 import com.man.erpcenter.sales.biz.util.YhHttpUtil;
 import com.man.erpcenter.sales.client.constant.QcodeEnum;
 

@@ -15,6 +15,11 @@
 			<artifactId>erpcenter-sales-client</artifactId>
 		</dependency>
 		<dependency>
+				<groupId>com.man</groupId>
+				 <artifactId>erpcenter-common</artifactId>
+				 <scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.dxm.mqservice</groupId>
 			<artifactId>mqsendservice</artifactId>
 		</dependency>

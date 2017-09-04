@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSON;
 import com.dxm.mqservice.mq.MsgSenderService;
+import com.man.erpcenter.common.utils.ObjectUtil;
 import com.man.erpcenter.sales.biz.manager.QqInfoManager;
 import com.man.erpcenter.sales.biz.manager.StartDoJob;
 import com.man.erpcenter.sales.biz.manager.StartUserThread;
-import com.man.erpcenter.sales.biz.util.ObjectUtil;
 import com.man.erpcenter.sales.client.constant.MqMsgInfoEnum;
 import com.man.erpcenter.sales.client.mqvo.QemotInfoMqVo;
 import com.man.erpcenter.sales.client.mqvo.QinfoCookieMqVo;
