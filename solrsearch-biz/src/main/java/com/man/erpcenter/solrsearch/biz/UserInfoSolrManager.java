@@ -3,6 +3,7 @@ package com.man.erpcenter.solrsearch.biz;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -12,7 +13,6 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
 import com.man.erpcenter.common.utils.ObjectUtil;
-import com.man.erpcenter.sales.client.po.QuserInfoPo;
 import com.man.erpcenter.sales.client.solr.SolrQueryParams;
 import com.man.erpcenter.sales.client.solr.SolrSearchResult;
 import com.man.erpcenter.solrsearch.client.SolrUserInfo;
@@ -24,9 +24,30 @@ public class UserInfoSolrManager extends SolrSearchCenterManager {
 		return SolrConstaint.USER_INFO_CORE_NAME;
 	}
 	
+	private String parseQueryStr(Map<String,Object> params){
+		StringBuffer sb = new StringBuffer("");
+		String uid = ObjectUtil.toString(params.get("uid"));
+		String sex = ObjectUtil.toString(params.get("sex"));
+		if(!"".equals(uid)){
+			sb.append(" AND ").append("uid:").append(uid);
+		}
+		if(!"".equals(sex)){
+			sb.append(" AND ").append("sex:").append(sex);
+		}
+
+		if("".equals(sb.toString())){
+			sb.append("*:*");
+			return sb.toString();
+		}else{
+			return sb.toString().replaceFirst("AND","");
+		}
+	}
+	
 	public SolrSearchResult<SolrUserInfo> querySolrUserInfo(SolrQueryParams bizParams){
 		SolrSearchResult<SolrUserInfo> solrSearchResult = new SolrSearchResult<SolrUserInfo>();
 		HttpSolrClient solrClient = getSolrClient();
+		bizParams.setQ(parseQueryStr(bizParams.getBizParams()));
+		System.out.println(bizParams.getQ());
 		SolrQuery solrQuery = parseSolrQuery(bizParams);
 		QueryResponse resp;
 		try {
@@ -65,5 +86,7 @@ public class UserInfoSolrManager extends SolrSearchCenterManager {
 		
 		return solrSearchResult;
 	}
+	
+	
 
 }
