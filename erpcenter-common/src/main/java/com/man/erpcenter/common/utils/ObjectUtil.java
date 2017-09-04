@@ -1,12 +1,9 @@
-package com.man.erpcenter.sales.biz.util;
+package com.man.erpcenter.common.utils;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 
 /**
  * 工具操作类
@@ -29,6 +26,11 @@ public class ObjectUtil {
 			
 		}
 		return num;
+	}
+	
+	public static int parseInt(Object src){
+		Integer i = parseInteger(src);
+		return i != null ? i : 0;
 	}
 	public static Double parseDouble(Object src){
 			return Double.parseDouble(ObjectUtil.toString(src,"0"));
@@ -118,12 +120,5 @@ public class ObjectUtil {
 		return o;
 	}
 	
-	public static Map<String,Object> parseMap(Object po){
-		Map<String,Object> params = new HashMap<String,Object>();
-		if(null != po){
-			String content = JSON.toJSONString(po,SerializerFeature.WriteNullStringAsEmpty);
-			params = JSON.parseObject(content,Map.class);
-		}
-		return params;
-	}
+	
 }

@@ -99,6 +99,11 @@
 			<groupId>org.apache.zookeeper</groupId>
 			<artifactId>zookeeper</artifactId>
 		</dependency>
+		
+		<dependency>
+				<groupId>com.man</groupId>
+				 <artifactId>erpcenter-common</artifactId>
+		</dependency>
 
 
 	</dependencies>

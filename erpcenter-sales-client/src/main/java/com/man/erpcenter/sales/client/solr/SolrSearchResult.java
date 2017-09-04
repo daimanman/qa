@@ -14,10 +14,21 @@ public class SolrSearchResult<T> {
 	
 	public long pages;
 	
+	public long page;
+	
 	/**
 	 * 不带分页
 	 */
 	public T value;
+	
+
+	public long getPage() {
+		return page;
+	}
+
+	public void setPage(long page) {
+		this.page = page;
+	}
 
 	public long getStart() {
 		return start;

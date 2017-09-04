@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.man</groupId>
 	<artifactId>erpcenter</artifactId>
@@ -21,9 +22,10 @@
 		<module>erpcenter-sales-biz</module>
 		<module>erpcenter-sales-api</module>
 		<module>erpcenter-sales-web</module>
-    <module>solrsearch-client</module>
-    <module>solrsearch-biz</module>
-  </modules>
+		<module>solrsearch-client</module>
+		<module>solrsearch-biz</module>
+		<module>erpcenter-common</module>
+	</modules>
 	<dependencyManagement>
 		<dependencies>
 
@@ -42,7 +44,11 @@
 				<artifactId>solr-solrj</artifactId>
 				<version>5.3.0</version>
 			</dependency>
-
+			<dependency>
+				<groupId>com.man</groupId>
+				 <artifactId>erpcenter-common</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 
 			<dependency>
@@ -297,18 +303,18 @@
 				<artifactId>spring-data-redis</artifactId>
 				<version>1.7.2.RELEASE</version>
 			</dependency>
-			
-			<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.1</version>
-		</dependency>
 
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpmime</artifactId>
-			<version>4.5.2</version>
-		</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.5.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpmime</artifactId>
+				<version>4.5.2</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>

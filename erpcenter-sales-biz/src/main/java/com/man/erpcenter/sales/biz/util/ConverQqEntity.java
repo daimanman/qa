@@ -2,6 +2,7 @@ package com.man.erpcenter.sales.biz.util;
 
 import java.util.Map;
 
+import com.man.erpcenter.common.utils.ObjectUtil;
 import com.man.erpcenter.sales.client.po.QemotComment;
 import com.man.erpcenter.sales.client.po.QemotCommentReply;
 import com.man.erpcenter.sales.client.po.QemotInfo;

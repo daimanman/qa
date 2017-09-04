@@ -3,6 +3,7 @@ package com.man.erpcenter.solrsearch.biz;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -11,9 +12,10 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
-import com.man.erpcenter.sales.client.po.QuserInfoPo;
+import com.man.erpcenter.common.utils.ObjectUtil;
 import com.man.erpcenter.sales.client.solr.SolrQueryParams;
 import com.man.erpcenter.sales.client.solr.SolrSearchResult;
+import com.man.erpcenter.solrsearch.client.SolrUserInfo;
 
 public class UserInfoSolrManager extends SolrSearchCenterManager {
 
@@ -22,11 +24,30 @@ public class UserInfoSolrManager extends SolrSearchCenterManager {
 		return SolrConstaint.USER_INFO_CORE_NAME;
 	}
 	
+	private String parseQueryStr(Map<String,Object> params){
+		StringBuffer sb = new StringBuffer("");
+		String uid = ObjectUtil.toString(params.get("uid"));
+		String sex = ObjectUtil.toString(params.get("sex"));
+		if(!"".equals(uid)){
+			sb.append(" AND ").append("uid:").append(uid);
+		}
+		if(!"".equals(sex)){
+			sb.append(" AND ").append("sex:").append(sex);
+		}
+
+		if("".equals(sb.toString())){
+			sb.append("*:*");
+			return sb.toString();
+		}else{
+			return sb.toString().replaceFirst("AND","");
+		}
+	}
 	
-	
-	public SolrSearchResult<QuserInfoPo> querySolrUserInfo(SolrQueryParams bizParams){
-		SolrSearchResult<QuserInfoPo> solrSearchResult = new SolrSearchResult<QuserInfoPo>();
+	public SolrSearchResult<SolrUserInfo> querySolrUserInfo(SolrQueryParams bizParams){
+		SolrSearchResult<SolrUserInfo> solrSearchResult = new SolrSearchResult<SolrUserInfo>();
 		HttpSolrClient solrClient = getSolrClient();
+		bizParams.setQ(parseQueryStr(bizParams.getBizParams()));
+		System.out.println(bizParams.getQ());
 		SolrQuery solrQuery = parseSolrQuery(bizParams);
 		QueryResponse resp;
 		try {
@@ -34,28 +55,33 @@ public class UserInfoSolrManager extends SolrSearchCenterManager {
 			SolrDocumentList results =  resp.getResults();
 			solrSearchResult.setTotal(results.getNumFound());
 			solrSearchResult.setStart(results.getStart());
+<<<<<<< .mine
 			solrSearchResult.setRows(bizParams.getRows());
 			List<QuserInfoPo> datas = new ArrayList<QuserInfoPo>();
+=======
+			List<SolrUserInfo> datas = new ArrayList<SolrUserInfo>();
+
+>>>>>>> .theirs
 			for(SolrDocument doc:results){
-				QuserInfoPo userInfo = new QuserInfoPo();
-				userInfo.setId(Double.parseDouble(doc.get("id").toString()));
-				userInfo.setAge(doc.get("age").toString());
-				userInfo.setBirthday(doc.get("birthday").toString());
-				userInfo.setBirthyear(doc.get("birthyear").toString());
-				userInfo.setBloodtype(doc.get("bloodtype").toString());
-				userInfo.setCareer(doc.get("career").toString());
-				userInfo.setCity(doc.get("city").toString());
-				userInfo.setCompany(doc.get("company").toString());
-				userInfo.setCountry(doc.get("country").toString());
-				userInfo.setHc(doc.get("hc").toString());
-				userInfo.setHco(doc.get("hco").toString());
-				userInfo.setHp(doc.get("hp").toString());
-				userInfo.setMarriage(doc.get("marriage").toString());
-				userInfo.setNickname(doc.get("nickname").toString());
-				userInfo.setProvince(doc.get("province").toString());
-				userInfo.setSex(doc.get("sex").toString());
-				userInfo.setUid(Double.parseDouble(doc.get("uid").toString()));
-				datas.add(userInfo);
+				SolrUserInfo solrUserInfo = new SolrUserInfo();
+				solrUserInfo.age = ObjectUtil.parseInt(doc.get("age"));
+				solrUserInfo.birthday  = ObjectUtil.toString(doc.get("birthday"));
+				solrUserInfo.birthyear = ObjectUtil.parseInt(doc.get("birthyear"));
+				solrUserInfo.bloodtype = ObjectUtil.parseInt(doc.get("bloodtype"));
+				solrUserInfo.career = ObjectUtil.toString(doc.get("career"));
+				solrUserInfo.city = ObjectUtil.toString(doc.get("city"));
+			    solrUserInfo.company = ObjectUtil.toString(doc.get("company"));
+			    solrUserInfo.country = ObjectUtil.toString(doc.get("country"));
+			    solrUserInfo.hc = ObjectUtil.toString(doc.get("hc"));
+			    solrUserInfo.hco = ObjectUtil.toString(doc.get("hco"));
+			    solrUserInfo.hp = ObjectUtil.toString(doc.get("hp"));
+			    solrUserInfo.id = ObjectUtil.parseLong(doc.get("id"));
+			    solrUserInfo.marriage = ObjectUtil.parseInt(doc.get("marriage"));
+			    solrUserInfo.nickname = ObjectUtil.toString(doc.get("nickname"));
+			    solrUserInfo.province = ObjectUtil.toString(doc.get("province"));
+			    solrUserInfo.sex = ObjectUtil.parseInt(doc.get("sex"));
+			    solrUserInfo.uid = ObjectUtil.parseLong(doc.get("uid"));
+			    datas.add(solrUserInfo);
 			}
 			solrSearchResult.setDatas(datas);
 		} catch (SolrServerException e) {
@@ -66,5 +92,7 @@ public class UserInfoSolrManager extends SolrSearchCenterManager {
 		
 		return solrSearchResult;
 	}
+	
+	
 
 }

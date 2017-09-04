@@ -26,6 +26,15 @@
 			<artifactId>erpcenter-sales-client</artifactId>
 		</dependency>
 		<dependency>
+				<groupId>com.man</groupId>
+				 <artifactId>erpcenter-common</artifactId>
+				 <scope>provided</scope>
+		</dependency>
+		<dependency>
+				<groupId>com.man</groupId>
+				<artifactId>solrsearch-client</artifactId>
+			</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
