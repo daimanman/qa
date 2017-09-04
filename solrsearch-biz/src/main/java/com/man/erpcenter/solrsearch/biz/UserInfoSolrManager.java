@@ -28,11 +28,16 @@ public class UserInfoSolrManager extends SolrSearchCenterManager {
 		StringBuffer sb = new StringBuffer("");
 		String uid = ObjectUtil.toString(params.get("uid"));
 		String sex = ObjectUtil.toString(params.get("sex"));
+		String city = ObjectUtil.toString(params.get("city"));
 		if(!"".equals(uid)){
 			sb.append(" AND ").append("uid:").append(uid);
 		}
-		if(!"".equals(sex)){
+		if(!"-1".equals(sex) && !"".equals(sex)){
 			sb.append(" AND ").append("sex:").append(sex);
+		}
+		
+		if(!"".equals(city)){
+			sb.append(" AND hc:").append(city);
 		}
 
 		if("".equals(sb.toString())){
@@ -47,7 +52,6 @@ public class UserInfoSolrManager extends SolrSearchCenterManager {
 		SolrSearchResult<SolrUserInfo> solrSearchResult = new SolrSearchResult<SolrUserInfo>();
 		HttpSolrClient solrClient = getSolrClient();
 		bizParams.setQ(parseQueryStr(bizParams.getBizParams()));
-		System.out.println(bizParams.getQ());
 		SolrQuery solrQuery = parseSolrQuery(bizParams);
 		QueryResponse resp;
 		try {
@@ -55,13 +59,8 @@ public class UserInfoSolrManager extends SolrSearchCenterManager {
 			SolrDocumentList results =  resp.getResults();
 			solrSearchResult.setTotal(results.getNumFound());
 			solrSearchResult.setStart(results.getStart());
-<<<<<<< .mine
-			solrSearchResult.setRows(bizParams.getRows());
-			List<QuserInfoPo> datas = new ArrayList<QuserInfoPo>();
-=======
-			List<SolrUserInfo> datas = new ArrayList<SolrUserInfo>();
 
->>>>>>> .theirs
+			List<SolrUserInfo> datas = new ArrayList<SolrUserInfo>();
 			for(SolrDocument doc:results){
 				SolrUserInfo solrUserInfo = new SolrUserInfo();
 				solrUserInfo.age = ObjectUtil.parseInt(doc.get("age"));
