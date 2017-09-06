@@ -6,7 +6,7 @@
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 	<context:annotation-config />
 
-	<bean id="userInfoSolrManager" class="com.man.erpcenter.solrsearch.biz.UserInfoSolrManager" init-method="initSolrClient" >
+	<bean id="initSolrManager" class="com.man.erpcenter.solrsearch.biz.InitSolrManager" init-method="initSolrClient" >
 		<property name="solrServer" value="${solr.server.url}"></property>
 		<property name="coreSet">
 			<set>
@@ -15,6 +15,10 @@
 			</set>
 		</property>
 	</bean>
+	
+	<bean id="userInfoSolrManager" class="com.man.erpcenter.solrsearch.biz.UserInfoSolrManager" />
+	<bean id="photoInfoSolrManager" class="com.man.erpcenter.solrsearch.biz.PhotoInfoSolrManager" />
+	
 
 
 </beans>

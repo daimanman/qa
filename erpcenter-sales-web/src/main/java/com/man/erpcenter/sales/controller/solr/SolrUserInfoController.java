@@ -14,7 +14,9 @@ import com.man.erpcenter.common.utils.ObjectUtil;
 import com.man.erpcenter.sales.client.solr.SolrQueryParams;
 import com.man.erpcenter.sales.client.solr.SolrSearchResult;
 import com.man.erpcenter.sales.controller.BaseController;
+import com.man.erpcenter.solrsearch.biz.PhotoInfoSolrManager;
 import com.man.erpcenter.solrsearch.biz.UserInfoSolrManager;
+import com.man.erpcenter.solrsearch.client.SolrPhotoInfo;
 import com.man.erpcenter.solrsearch.client.SolrUserInfo;
 
 @Controller
@@ -22,18 +24,27 @@ import com.man.erpcenter.solrsearch.client.SolrUserInfo;
 public class SolrUserInfoController extends BaseController {
 
 	@Autowired
-	private UserInfoSolrManager solrManager; 
+	private UserInfoSolrManager userSolrManager; 
+	@Autowired
+	private PhotoInfoSolrManager photoSolrManager;
 	
 	@RequestMapping("queryUserInfo")
 	public void queryUserInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		Map<String,Object> params  = getReqParams(request);
 		SolrQueryParams solrParams = new SolrQueryParams();
-		solrParams.setBizParams(params);
-		solrParams.setRows(ObjectUtil.parseLong(params.get("rows")));
-		solrParams.setStart(ObjectUtil.parseLong(params.get("start")));
-		SolrSearchResult<SolrUserInfo> result =  solrManager.querySolrUserInfo(solrParams);
-		result.setPage(ObjectUtil.parseLong(params.get("page")));
-		result.setRows(ObjectUtil.parseLong(params.get("rows")));
+		initSolrBeforeQueryParams(solrParams, params);
+		SolrSearchResult<SolrUserInfo> result =  userSolrManager.querySolrUserInfo(solrParams);
+		initSolrAfterQueryParams(result, params);
+		sendJson(response, result);
+	}
+	
+	@RequestMapping("/queryPhotoInfo")
+	public void queryPhotoInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		Map<String,Object> params = getReqParams(request);
+		SolrQueryParams solrParams = new SolrQueryParams();
+		initSolrBeforeQueryParams(solrParams, params);
+		SolrSearchResult<SolrPhotoInfo> result = photoSolrManager.querySolrPhotoInfo(solrParams);
+		initSolrAfterQueryParams(result, params);
 		sendJson(response, result);
 	}
 }

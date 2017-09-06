@@ -12,12 +12,12 @@ import com.man.erpcenter.sales.client.solr.SolrQueryParams;
 
 public abstract class SolrSearchCenterManager {
 
-	private String solrServer;
+	public static String solrServer;
 	
-	private Map<String,HttpSolrClient> solrClientMap = new HashMap<String,HttpSolrClient>();
+	public static Map<String,HttpSolrClient> solrClientMap = new HashMap<String,HttpSolrClient>();
 
 	
-	private Set<String> coreSet = new HashSet<String>();
+	public static Set<String> coreSet = new HashSet<String>();
 	
 	
 	private HttpSolrClient getSolrClient(String coreKey) {

@@ -32,6 +32,12 @@ public class ObjectUtil {
 		Integer i = parseInteger(src);
 		return i != null ? i : 0;
 	}
+	public static int parseInt(Object src,int plan){
+		if(src == null || src.toString().equals("")){
+			return plan;
+		}
+		return parseInt(src);
+	}
 	public static Double parseDouble(Object src){
 			return Double.parseDouble(ObjectUtil.toString(src,"0"));
 	}
