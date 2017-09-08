@@ -14,8 +14,10 @@ import com.man.erpcenter.common.utils.ObjectUtil;
 import com.man.erpcenter.sales.client.solr.SolrQueryParams;
 import com.man.erpcenter.sales.client.solr.SolrSearchResult;
 import com.man.erpcenter.sales.controller.BaseController;
+import com.man.erpcenter.solrsearch.biz.ImgSolrManager;
 import com.man.erpcenter.solrsearch.biz.PhotoInfoSolrManager;
 import com.man.erpcenter.solrsearch.biz.UserInfoSolrManager;
+import com.man.erpcenter.solrsearch.client.SolrImgInfo;
 import com.man.erpcenter.solrsearch.client.SolrPhotoInfo;
 import com.man.erpcenter.solrsearch.client.SolrUserInfo;
 
@@ -27,6 +29,8 @@ public class SolrUserInfoController extends BaseController {
 	private UserInfoSolrManager userSolrManager; 
 	@Autowired
 	private PhotoInfoSolrManager photoSolrManager;
+	@Autowired
+	private ImgSolrManager imgSolrManager;
 	
 	@RequestMapping("queryUserInfo")
 	public void queryUserInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
@@ -44,6 +48,16 @@ public class SolrUserInfoController extends BaseController {
 		SolrQueryParams solrParams = new SolrQueryParams();
 		initSolrBeforeQueryParams(solrParams, params);
 		SolrSearchResult<SolrPhotoInfo> result = photoSolrManager.querySolrPhotoInfo(solrParams);
+		initSolrAfterQueryParams(result, params);
+		sendJson(response, result);
+	}
+	
+	@RequestMapping("/queryImgInfo")
+	public void queryImgInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		Map<String,Object> params = getReqParams(request);
+		SolrQueryParams solrParams = new SolrQueryParams();
+		initSolrBeforeQueryParams(solrParams, params);
+		SolrSearchResult<SolrImgInfo> result = imgSolrManager.querySolrImgInfo(solrParams);
 		initSolrAfterQueryParams(result, params);
 		sendJson(response, result);
 	}

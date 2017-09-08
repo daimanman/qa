@@ -15,48 +15,46 @@ import org.apache.solr.common.SolrDocumentList;
 import com.man.erpcenter.common.utils.ObjectUtil;
 import com.man.erpcenter.sales.client.solr.SolrQueryParams;
 import com.man.erpcenter.sales.client.solr.SolrSearchResult;
-import com.man.erpcenter.solrsearch.client.SolrPhotoInfo;
+import com.man.erpcenter.solrsearch.client.SolrImgInfo;
 
-public class PhotoInfoSolrManager extends SolrSearchCenterManager {
+public class ImgSolrManager extends SolrSearchCenterManager {
 
 	@Override
 	public String getCoreName() {
-		return SolrConstaint.PHOTO_CORE_NAME;
+		return SolrConstaint.IMG_CORE_NAME;
 	}
 	
-	public SolrSearchResult<SolrPhotoInfo> querySolrPhotoInfo(SolrQueryParams solrQueryParams){
-		SolrSearchResult<SolrPhotoInfo> solrSearchResult = new SolrSearchResult<SolrPhotoInfo>();
+
+	public  SolrSearchResult<SolrImgInfo> querySolrImgInfo(SolrQueryParams solrQueryParams){
+		SolrSearchResult<SolrImgInfo> solrSearchResult = new SolrSearchResult<SolrImgInfo>();
 		HttpSolrClient solrClient = getSolrClient();
-		solrQueryParams.setQ(parseQueryStr(solrQueryParams.bizParams));
+		solrQueryParams.setQ(parseQueryStr(solrQueryParams.getBizParams()));
 		SolrQuery solrQuery = parseSolrQuery(solrQueryParams);
 		QueryResponse resp;
-		
 		try {
 			resp = solrClient.query(solrQuery);
 			SolrDocumentList results =  resp.getResults();
 			solrSearchResult.setTotal(results.getNumFound());
 			solrSearchResult.setStart(results.getStart());
-			List<SolrPhotoInfo> datas = new ArrayList<SolrPhotoInfo>();
+
+			List<SolrImgInfo> datas = new ArrayList<SolrImgInfo>();
 			for(SolrDocument doc:results){
-				SolrPhotoInfo photo = new SolrPhotoInfo();
-				photo.allowAccess = ObjectUtil.parseInt(doc.get("allow_access"));
-				photo.comment = ObjectUtil.parseInt(doc.get("comment"));
-				photo.createtime = ObjectUtil.parseLong(doc.get("createtime"));
-				photo.desc = ObjectUtil.toString(doc.get("desc"));
-				photo.id = ObjectUtil.parseLong(doc.get("id"));
-				photo.name = ObjectUtil.toString(doc.get("name"));
-				photo.pre = ObjectUtil.toString(doc.get("pre"));
-				photo.topicid = ObjectUtil.toString(doc.get("topicid"));
-				photo.totalnum = ObjectUtil.parseInt(doc.get("totalnum"));
-				photo.uid = ObjectUtil.parseLong(doc.get("uid"));
-				datas.add(photo);
+				SolrImgInfo img = new SolrImgInfo();
+				img.id = ObjectUtil.parseLong(doc.get("id"));
+				img.cameratype = ObjectUtil.toString(doc.get("cameratype"));
+				img.photoId = ObjectUtil.parseLong(doc.get("photo_id"));
+				img.poiname =  ObjectUtil.toString(doc.get("poiname"));
+				img.uid = ObjectUtil.parseLong(doc.get("uid"));
+				img.uploadtime = ObjectUtil.toString(doc.get("uploadtime"));
+				img.url = ObjectUtil.toString(doc.get("url"));
+				datas.add(img);
 			}
 			solrSearchResult.setDatas(datas);
 		} catch (SolrServerException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}  
 		
 		return solrSearchResult;
 	}
@@ -64,18 +62,13 @@ public class PhotoInfoSolrManager extends SolrSearchCenterManager {
 	private String parseQueryStr(Map<String,Object> params){
 		StringBuffer sb = new StringBuffer("");
 		String uid = ObjectUtil.toString(params.get("uid"));
-		String desc = ObjectUtil.toString(params.get("desc"));
-		int allowAccess = ObjectUtil.parseInt(params.get("allowAccess"),0);
+		String photoId = ObjectUtil.toString(params.get("photoId"));
 		if(!"".equals(uid)){
 			sb.append(" AND ").append("uid:").append(uid);
 		}
 		
-		if(allowAccess >= 0){
-			sb.append(" AND allow_access:").append(allowAccess);
-		}
-		
-		if(!"".equals(desc)){
-			sb.append(" AND desc:*").append(desc).append("*");
+		if(!"".equals(photoId)){
+			sb.append(" AND photo_id:").append(photoId);
 		}
 
 		if("".equals(sb.toString())){
@@ -85,6 +78,5 @@ public class PhotoInfoSolrManager extends SolrSearchCenterManager {
 			return sb.toString().replaceFirst("AND","");
 		}
 	}
-	
 
 }

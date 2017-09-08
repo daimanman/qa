@@ -12,12 +12,14 @@
 			<set>
 				<value>${solr.core.userinfo}</value>
 				<value>${solr.core.photo}</value>
+				<value>${solr.core.img}</value>
 			</set>
 		</property>
 	</bean>
 	
 	<bean id="userInfoSolrManager" class="com.man.erpcenter.solrsearch.biz.UserInfoSolrManager" />
 	<bean id="photoInfoSolrManager" class="com.man.erpcenter.solrsearch.biz.PhotoInfoSolrManager" />
+	<bean id="imgSolrManager" class="com.man.erpcenter.solrsearch.biz.ImgSolrManager" />
 	
 
 
