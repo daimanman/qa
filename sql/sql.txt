@@ -1,0 +1,27 @@
+CREATE TABLE `rr_user` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `gender` tinyint(2) DEFAULT NULL COMMENT '1 man 0 woman',
+  `pop_value` int(10) DEFAULT NULL,
+  `logo_img` varchar(300) DEFAULT NULL,
+  `school_id` int(10) DEFAULT NULL,
+  `rid` bigint(20) DEFAULT NULL,
+  `birthdate` datetime DEFAULT NULL,
+  `hp` varchar(50) DEFAULT NULL COMMENT '所在地省',
+  `hp_code` varchar(20) DEFAULT NULL,
+  `hc` varchar(50) DEFAULT NULL,
+  `hc_code` varchar(20) DEFAULT NULL,
+  `fp` varchar(50) DEFAULT NULL,
+  `fp_code` varchar(20) DEFAULT NULL,
+  `fc` varchar(50) DEFAULT NULL,
+  `fc_code` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE `rr_school` (
+  `prov_id` int(10) DEFAULT NULL,
+  `prov_name` varchar(255) DEFAULT NULL,
+  `univ_id` int(10) DEFAULT NULL,
+  `univ_name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

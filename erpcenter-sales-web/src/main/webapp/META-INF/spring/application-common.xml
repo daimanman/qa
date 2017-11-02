@@ -23,6 +23,9 @@
           init-method="init" destroy-method="destroy">
         <property name="nameServer" value="${rocketmq.domain.name}"/>
     </bean>
+    
+    <bean id="idWorker" class="com.man.erpcenter.common.utils.IdWorker"/>
+    
 	
 	
 	

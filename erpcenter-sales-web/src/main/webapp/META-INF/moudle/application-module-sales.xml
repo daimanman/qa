@@ -14,6 +14,8 @@
 	<!-- <import resource="../spring/application-export-client-sales.xml" /> -->
 	<!-- <import resource="../spring/application-mq-sales.xml" /> -->
 	<import resource="../spring/application-manager-solr.xml" />
+	<import resource="../spring/application-service-rr.xml" />
+	
 	
 	
 	
