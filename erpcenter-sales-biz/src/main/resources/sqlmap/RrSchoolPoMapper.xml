@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.erpcenter.sales.biz.mapper.RrSchoolPoMapper" >
+  <resultMap id="BaseResultMap" type="com.man.erpcenter.sales.client.po.RrSchoolPo" >
+    <result column="prov_id" property="provId" jdbcType="INTEGER" />
+    <result column="prov_name" property="provName" jdbcType="VARCHAR" />
+    <result column="univ_id" property="univId" jdbcType="INTEGER" />
+    <result column="univ_name" property="univName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="addRrSchool" parameterType="com.man.erpcenter.sales.client.po.RrSchoolPo" >
+    insert into rr_school (prov_id, prov_name, univ_id, 
+      univ_name)
+    values (#{provId,jdbcType=INTEGER}, #{provName,jdbcType=VARCHAR}, #{univId,jdbcType=INTEGER}, 
+      #{univName,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="addRrSchoolBatch" parameterType="list" >
+    insert into rr_school (prov_id, prov_name, univ_id, 
+      univ_name)
+      values
+      <foreach collection="list" item="bizObj" separator=",">
+      (
+      #{bizObj.provId,jdbcType=INTEGER}, 
+      #{bizObj.provName,jdbcType=VARCHAR}, 
+      #{bizObj.univId,jdbcType=INTEGER}, 
+      #{bizObj.univName,jdbcType=VARCHAR}
+      )
+      </foreach>
+     
+  </insert>
+ 
+</mapper>

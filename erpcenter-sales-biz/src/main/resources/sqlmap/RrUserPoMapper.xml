@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.man.erpcenter.sales.biz.mapper.RrUserPoMapper" >
+  <resultMap id="BaseResultMap" type="com.man.erpcenter.sales.client.po.RrUserPo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="TINYINT" />
+    <result column="pop_value" property="popValue" jdbcType="INTEGER" />
+    <result column="logo_img" property="logoImg" jdbcType="VARCHAR" />
+    <result column="school_id" property="schoolId" jdbcType="INTEGER" />
+    <result column="rid" property="rid" jdbcType="BIGINT" />
+    <result column="birthdate" property="birthdate" jdbcType="TIMESTAMP" />
+    <result column="hp" property="hp" jdbcType="VARCHAR" />
+    <result column="hp_code" property="hpCode" jdbcType="VARCHAR" />
+    <result column="hc" property="hc" jdbcType="VARCHAR" />
+    <result column="hc_code" property="hcCode" jdbcType="VARCHAR" />
+    <result column="fp" property="fp" jdbcType="VARCHAR" />
+    <result column="fp_code" property="fpCode" jdbcType="VARCHAR" />
+    <result column="fc" property="fc" jdbcType="VARCHAR" />
+    <result column="fc_code" property="fcCode" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="addRrUser" parameterType="com.man.erpcenter.sales.client.po.RrUserPo" >
+    insert into rr_user (id, name, gender, 
+      pop_value, logo_img, school_id, 
+      rid, birthdate, hp, 
+      hp_code, hc, hc_code, 
+      fp, fp_code, fc, fc_code
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, 
+      #{popValue,jdbcType=INTEGER}, #{logoImg,jdbcType=VARCHAR}, #{schoolId,jdbcType=INTEGER}, 
+      #{rid,jdbcType=BIGINT}, #{birthdate,jdbcType=TIMESTAMP}, #{hp,jdbcType=VARCHAR}, 
+      #{hpCode,jdbcType=VARCHAR}, #{hc,jdbcType=VARCHAR}, #{hcCode,jdbcType=VARCHAR}, 
+      #{fp,jdbcType=VARCHAR}, #{fpCode,jdbcType=VARCHAR}, #{fc,jdbcType=VARCHAR}, #{fcCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="addRrUserBatch" parameterType="list">
+  		 insert into rr_user (id, name, gender, 
+      pop_value, logo_img, school_id, 
+      rid, birthdate, hp, 
+      hp_code, hc, hc_code, 
+      fp, fp_code, fc, fc_code
+      )
+      values 
+      <foreach collection="list" item="bizObj" separator=",">
+      (
+      #{bizObj.id,jdbcType=BIGINT},
+      #{bizObj.name,jdbcType=VARCHAR},
+      #{bizObj.gender,jdbcType=TINYINT}, 
+      #{bizObj.popValue,jdbcType=INTEGER}, 
+      #{bizObj.logoImg,jdbcType=VARCHAR}, 
+      #{bizObj.schoolId,jdbcType=INTEGER}, 
+      #{bizObj.rid,jdbcType=BIGINT}, 
+      #{bizObj.birthdate,jdbcType=TIMESTAMP}, 
+      #{bizObj.hp,jdbcType=VARCHAR}, 
+      #{bizObj.hpCode,jdbcType=VARCHAR},
+      #{bizObj.hc,jdbcType=VARCHAR}, 
+      #{bizObj.hcCode,jdbcType=VARCHAR}, 
+      #{bizObj.fp,jdbcType=VARCHAR}, 
+      #{bizObj.fpCode,jdbcType=VARCHAR}, 
+      #{bizObj.fc,jdbcType=VARCHAR}, 
+      #{bizObj.fcCode,jdbcType=VARCHAR}
+      )
+      
+      </foreach>
+    
+  </insert>
+  
+  <insert id="addErrLog" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+  	INSERT INTO `rr_base_err` (`school_id`, `gender`, `offset`) VALUES 
+  	(#{schoolId},#{gender}, #{offset})
+  </insert>
+  
+  <insert id="updateLog" parameterType="map">
+  	UPDATE rr_base_log SET  result_num=#{resultNum}, offset=#{offset} 
+  	
+  	WHERE school_id = #{schoolId} and gender = #{gender}
+  </insert>
+  
+  <select id="getOffsetBySidAndGender" parameterType="map" resultType="integer">
+  	<![CDATA[
+  		select ifnull(offset,0) from rr_base_log where school_id = #{schoolId} and gender = #{gender}
+  	]]>
+  </select>
+  
+  
+  	
+ 
+</mapper>
