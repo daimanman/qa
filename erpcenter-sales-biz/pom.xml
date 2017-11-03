@@ -94,9 +94,6 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
 		</dependency>
-
-
-
 	</dependencies>
 
 
