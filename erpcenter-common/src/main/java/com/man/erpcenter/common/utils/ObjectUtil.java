@@ -1,9 +1,14 @@
 package com.man.erpcenter.common.utils;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * 工具操作类
@@ -124,6 +129,45 @@ public class ObjectUtil {
 			}
 		}
 		return o;
+	}
+	
+	public  Map<String, String> getHeadersMap(String filename) {
+		Map<String, String> headersMap = new HashMap<String, String>();
+		try {
+			Properties properties = getPropertiesByFileName(filename);
+			Set<Object> keys = properties.keySet();
+			for (Object key : keys) {
+				headersMap.put(key.toString(), properties.getProperty(key.toString()));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return headersMap;
+	}
+	
+
+	public  Properties getPropertiesByFileName(String filename) throws Exception {
+		Properties properties = new Properties();
+		InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+		BufferedReader bf = new BufferedReader(new InputStreamReader(is, "utf-8"));
+		properties.load(bf);
+		return properties;
+	}
+	
+	public  Map<String, Object> getHttpParam(String propertiesName) {
+		Map<String, Object> headersMap = new HashMap<String, Object>();
+		try {
+			Properties properties = getPropertiesByFileName(propertiesName);
+			Set<Object> keys = properties.keySet();
+			for (Object key : keys) {
+				headersMap.put(key.toString(), properties.getProperty(key.toString()));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return headersMap;
 	}
 	
 	

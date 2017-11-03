@@ -2,7 +2,7 @@ package com.man.erpcenter.common.utils;
 
 public class IdWorker {
 
-	private final long workerId;
+	private  long workerId;
 	private long sequence = 0L;
 	public static final long maxWorkerId = 63L;
 	public static final long sequenceMask = 1023L;
@@ -15,6 +15,9 @@ public class IdWorker {
 		}
 		this.workerId = workerId;
 	}
+	
+	
+	public IdWorker(){}
 
 	public synchronized Long nextId() {
 		long timestamp = timeGen();

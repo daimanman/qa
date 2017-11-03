@@ -14,7 +14,6 @@
 		<property name="photoInfoUrl" value="${qq.photoinfo.url}"/>
 		<property name="imgInfoUrl" value="${qq.imginfo.url}"/>
 		<property name="visitUrl" value="${qq.visitinfo.url}"/>
-		
 	</bean>
 	
 	<bean id="startDoJob" class="com.man.erpcenter.sales.biz.manager.StartDoJob">
