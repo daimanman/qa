@@ -16,6 +16,7 @@
 		<ledis.version>1.0</ledis.version>
 		<fastjson.version>1.2.4</fastjson.version>
 		<redis.version>2.4.2</redis.version>
+
 	</properties>
 	<modules>
 		<module>erpcenter-sales-client</module>
@@ -335,6 +336,23 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-messaging</artifactId>
 				<version>4.0.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.logback-extensions</groupId>
+				<artifactId>logback-ext-spring</artifactId>
+				<version>0.1.1</version>
 			</dependency>
 
 		</dependencies>
