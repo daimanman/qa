@@ -114,11 +114,8 @@
 	<!--<logger name="com.pajk.sims"/> -->
 	<logger name="org.apache.zookeeper" level="INFO,CONSOLE" />
 	<logger name="com.alibaba.dubbo" level="INFO,CONSOLE" />
-	<root level="DEBUG">
+	<root level="INFO">
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="DEBUG" />
 		<appender-ref ref="INFO" />
-		<!-- <appender-ref ref="WARN"/> -->
-		<appender-ref ref="ERROR" />
 	</root>
 </configuration>
