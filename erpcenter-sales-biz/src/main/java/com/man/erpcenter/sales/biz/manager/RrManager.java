@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.alibaba.fastjson.JSON;
 import com.man.erpcenter.common.utils.IdWorker;
@@ -22,6 +23,8 @@ public class RrManager {
 	private Map<String,String> cookie;
 	
 	private Map<String,Object> baseParams;
+	
+	private Map<String,Boolean> baseFlagMap  = new HashMap<String,Boolean>();
 	
 	//请求基本信息
 	private String baseInfoUrl;
@@ -86,12 +89,17 @@ public class RrManager {
 				resultNumMap.put(schoolId, resultNum);
 			}
 			if(null != rusers && rusers.size() > 0){
+				try{
 				rrUserPoMapper.addRrUserBatch(rusers);
+				baseFlagMap.put(schoolId+"_"+gender, true);
+				}catch(Exception e){
+					System.out.println(schoolId+"----"+gender+"--------is over");
+					baseFlagMap.put(schoolId+"_"+gender, false);
+				}
 				rrUserPoMapper.updateLog(jsonMap);
 			}else{
 				int offset = ObjectUtil.parseInt(jsonMap.get("offset"));
 				rrUserPoMapper.addErrLog(jsonMap);
-				
 			}
 			
 		}catch(Exception e){
@@ -103,19 +111,22 @@ public class RrManager {
 		Map<String,Object> bizParams = new HashMap<String,Object>();
 		bizParams.put("schoolId", schoolId);
 		bizParams.put("gender",gender);
+		String key = schoolId+"_"+gender;
+	
 		
 		int startOffset = rrUserPoMapper.getOffsetBySidAndGender(bizParams);
-		while(true){
-			if(resultNumMap.get(schoolId) != null && resultNumMap.get(schoolId) < startOffset){
-				break;
-			}
+		System.out.println("----------startOffset-----------"+startOffset);
+		while((baseFlagMap.get(key) == null) || (baseFlagMap.get(key)) ){
 			
 			baseParams.put("offset",startOffset);
 			startOffset += 10;
 			
 			try {
 				String content = HttpRequestUtil.sendHttpPost(baseInfoUrl, baseParams, cookie);
-				rrWebsocket.sendMsg(WebsocketEndPoint.RR_USER_BASE, content);
+				WebSocketSession session =  rrWebsocket.sendMsg(WebsocketEndPoint.RR_USER_BASE, content);
+				if(null == session || !session.isOpen() ){
+					break;
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 				try {

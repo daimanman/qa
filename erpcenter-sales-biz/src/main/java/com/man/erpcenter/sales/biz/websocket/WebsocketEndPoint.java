@@ -35,7 +35,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 		
 	}
 	
-	public void sendMsg(String type,String content){
+	public WebSocketSession sendMsg(String type,String content){
 		WebSocketSession session = sMap.get(type);
 		if(null != session && session.isOpen()){
 			TextMessage returnMessage = new TextMessage(content);
@@ -45,6 +45,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				e.printStackTrace();
 			}
 		}
+		return session;
 	}
 	
 	private String getCookie(WebSocketSession session,String key){

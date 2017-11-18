@@ -25,6 +25,7 @@ public class RRController extends BaseController {
 	@RequestMapping("/sendBase")
 	public void sendBaseInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		rrManager.startBase(1001,0);
+		//sendJson(response, "OK");
 	}
 	
 	
