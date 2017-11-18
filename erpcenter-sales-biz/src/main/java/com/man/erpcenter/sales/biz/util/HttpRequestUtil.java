@@ -54,7 +54,11 @@ public class HttpRequestUtil  {
 				.register("https", sslsf).register("http", new PlainConnectionSocketFactory()).build();
 		cm = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
 		cm.setMaxTotal(2000*10);
+<<<<<<< HEAD
 		cm.setDefaultMaxPerRoute(50);
+=======
+		cm.setDefaultMaxPerRoute(20);
+>>>>>>> 76dc6b13b151af70ed4f3e6a2f3d53100e4a73bd
 	}
 	
 	
