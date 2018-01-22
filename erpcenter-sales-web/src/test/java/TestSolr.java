@@ -1,5 +1,7 @@
 
 
+import java.util.List;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -25,6 +27,14 @@ public class TestSolr {
 		System.out.println(results.getStart());
 		for(SolrDocument doc : results){
 			System.out.println(doc.get("uid"));
+		}
+	}
+	
+	@Test
+	public void testLoop(){
+		List as = null;
+		for(Object o:as){
+			System.out.println(o);
 		}
 	}
 }
