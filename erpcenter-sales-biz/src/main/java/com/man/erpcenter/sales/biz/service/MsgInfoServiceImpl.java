@@ -13,6 +13,14 @@ public class MsgInfoServiceImpl implements MsgInfoService {
 	@Autowired
 	private MsgInfoPoMapper msgInfoMapper;
 
+	public MsgInfoPoMapper getMsgInfoMapper() {
+		return msgInfoMapper;
+	}
+
+	public void setMsgInfoMapper(MsgInfoPoMapper msgInfoMapper) {
+		this.msgInfoMapper = msgInfoMapper;
+	}
+
 	@Override
 	public List<MsgInfoPo> selectList(int num) {
 		return msgInfoMapper.selectList(num);

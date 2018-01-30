@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.jboss.netty.util.internal.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.rocketmq.client.exception.MQBrokerException;
 import com.dxm.mqservice.mq.MsgSenderService;
 import com.man.erpcenter.common.utils.ObjectUtil;
 import com.man.erpcenter.sales.biz.mapper.QemotCommentMapper;

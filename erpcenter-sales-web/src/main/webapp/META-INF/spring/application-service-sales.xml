@@ -5,8 +5,10 @@
            http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 	<context:annotation-config />
+	<!--  
 	<bean id="msgInfoService" class="com.man.erpcenter.sales.biz.service.MsgInfoServiceImpl" />
 	
+
 	<bean id="qqInfoManager" class="com.man.erpcenter.sales.biz.manager.QqInfoManager">
 		<property name="baseInfoUrl" value="${qq.baseinfo.url}"/>
 		<property name="emotInfoUrl" value="${qq.emotinfo.url}"/>
@@ -16,12 +18,20 @@
 		<property name="visitUrl" value="${qq.visitinfo.url}"/>
 	</bean>
 	
+	
 	<bean id="startDoJob" class="com.man.erpcenter.sales.biz.manager.StartDoJob">
 	</bean>
+	 
 	
-	<!-- -->
+
 	<bean id="qqPrimaryKeyManager" class="com.man.erpcenter.sales.biz.manager.QqPrimaryKeyManager">
 	</bean>
+	-->
+	
+	<bean id="elasticSearchManager" class="com.man.erpcenter.sales.biz.manager.ElasticSearchManager">
+	</bean>
+	
+	
 	 
 	
 	
