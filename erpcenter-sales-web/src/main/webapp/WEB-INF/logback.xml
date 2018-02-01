@@ -18,8 +18,7 @@
 		</rollingPolicy>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<pattern>
-				%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]: %class %L %M - %X
-				%msg%xEx%n
+				%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]: %class %L %M - %X %msg%xEx%n
 			</pattern>
 		</encoder>
 	</appender>
@@ -42,8 +41,7 @@
 		</rollingPolicy>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<pattern>
-				%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]: %class %L %M - %X
-				%msg%xEx%n
+				%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]: %class %L %M - %X %msg%xEx%n
 			</pattern>
 		</encoder>
 	</appender>
@@ -66,8 +64,7 @@
 		</rollingPolicy>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<pattern>
-				%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]: %class %L %M - %X
-				%msg%xEx%n
+				%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]: %class %L %M - %X %msg%xEx%n
 			</pattern>
 		</encoder>
 	</appender>
@@ -90,8 +87,7 @@
 		</rollingPolicy>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<pattern>
-				%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]: %class %L %M - %X
-				%msg%xEx%n
+				%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]: %class %L %M - %X %msg%xEx%n
 			</pattern>
 		</encoder>
 	</appender>
@@ -114,8 +110,15 @@
 	<!--<logger name="com.pajk.sims"/> -->
 	<logger name="org.apache.zookeeper" level="INFO,CONSOLE" />
 	<logger name="com.alibaba.dubbo" level="INFO,CONSOLE" />
-	<root level="INFO">
-		<appender-ref ref="STDOUT" />
-		<appender-ref ref="INFO" />
-	</root>
+	<!--日志打印的包的范围，及分类日志文件存储 -->  
+    <logger name="com.man.erpcenter" additivity="false">  
+        <level value="DEBUG" />  
+        <appender-ref ref="STDOUT"/>  
+        <appender-ref ref="ERROR"/>  
+        <appender-ref ref="WARN"/>  
+        <appender-ref ref="INFO" />  
+    </logger> 
+    <root level="info">  
+        <appender-ref ref="STDOUT" />  
+     </root>
 </configuration>

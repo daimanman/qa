@@ -277,6 +277,15 @@
 		]]>
 	</select>
 	
+	<select id="queryList" parameterType="map" resultType="java.util.HashMap">
+		<![CDATA[
+			select a.* from ${tableName} a limit #{start},#{pageSize}
+		]]>
+	</select>
+	<select id="queryListCount" parameterType="map" resultType="integer">
+		select count(1) from ${tableName} a
+	</select>
+	
 
 
 

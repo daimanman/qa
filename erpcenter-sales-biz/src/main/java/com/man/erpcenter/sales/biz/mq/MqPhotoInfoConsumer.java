@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.alibaba.fastjson.JSON;
 import com.dxm.mqservice.mq.BaseRocketMqConsumer;
 import com.man.erpcenter.sales.biz.manager.QqInfoManager;
 import com.man.erpcenter.sales.biz.util.ConstaintsUtil;

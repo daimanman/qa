@@ -18,6 +18,8 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.man.erpcenter.common.utils.IDGenerator;
+import com.man.erpcenter.common.utils.IdWorker;
+import com.man.erpcenter.common.utils.ObjectUtil;
 import com.man.erpcenter.elasticsearch.service.ElasticSearchService;
 
 public class ElasticSearchServiceImpl implements ElasticSearchService {
@@ -138,8 +140,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		if (null != docList && docList.size() > 0) {
 			BulkRequestBuilder bulkRequest = client.prepareBulk();
 			for (Map<String, Object> doc : docList) {
-				String innerId = IDGenerator.uuid();
-				doc.put(ID_NAME, innerId);
+				String innerId = ObjectUtil.toString(doc.get("id"));
 				bulkRequest.add(client.prepareIndex(index, type, innerId).setSource(doc));
 			}
 			if (refresh) {

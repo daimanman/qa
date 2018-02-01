@@ -1,16 +1,26 @@
 package com.man.erpcenter.sales.biz.manager;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.man.erpcenter.elasticsearch.service.ElasticSearchService;
+import com.man.erpcenter.sales.biz.job.EsImportDataThread;
+import com.man.erpcenter.sales.biz.mapper.QuserInfoPoMapper;
 
 public class ElasticSearchManager {
 
+	private Logger logger  = LoggerFactory.getLogger(ElasticSearchManager.class);
+	
 	@Autowired
 	private ElasticSearchService elasticSearchService;
+	
+	@Autowired
+	private QuserInfoPoMapper infoMapper;
 
 	public ElasticSearchService getElasticSearchService() {
 		return elasticSearchService;
@@ -100,6 +110,58 @@ public class ElasticSearchManager {
 	public List<Map<String, Object>> multiIndex(String index, String type, List<Map<String, Object>> docList,
 			boolean refresh) {
 		return elasticSearchService.multiIndex(index, type, docList, refresh);
+	}
+	
+	
+	public void importMySqlData(String tableName){
+		int pageSize = 20000;
+		int page = 1;
+		int start = (page-1)*pageSize;
+		Map<String,Object> bizParams = new HashMap<String,Object>();
+		bizParams.put("tableName",tableName);
+		bizParams.put("start",start);
+		bizParams.put("pageSize",pageSize);
+		List<Map<String,Object>> datas = infoMapper.queryList(bizParams);
+		int total = infoMapper.queryListCount(bizParams);
+		int totalPage = (total+pageSize-1)/pageSize;
+		
+		new Thread(new EsImportDataThread(elasticSearchService, ElasticSearchService.QQ_INDEX,tableName, datas)).start();
+		
+		page++;
+		for(;page <=totalPage;page++){
+			start = (page-1)*pageSize;
+			bizParams.put("start",start);
+			List<Map<String,Object>> nextDatas = infoMapper.queryList(bizParams);
+			new Thread(new EsImportDataThread(elasticSearchService, ElasticSearchService.QQ_INDEX,tableName, nextDatas)).start();
+		}
+	}
+	public void importMySqlData01(String tableName){
+		int pageSize = 30000;
+		int page = 1;
+		int start = (page-1)*pageSize;
+		Map<String,Object> bizParams = new HashMap<String,Object>();
+		bizParams.put("tableName",tableName);
+		bizParams.put("start",start);
+		bizParams.put("pageSize",pageSize);
+		List<Map<String,Object>> datas = infoMapper.queryList(bizParams);
+		
+		
+		new Thread(new EsImportDataThread(elasticSearchService, ElasticSearchService.QQ_INDEX,tableName, datas)).start();
+		
+		page++;
+		for(;page >0;page++){
+			logger.info(tableName+"-----page----"+page);
+			start = (page-1)*pageSize;
+			bizParams.put("start",start);
+			List<Map<String,Object>> nextDatas = infoMapper.queryList(bizParams);
+			if(nextDatas == null || nextDatas.size() == 0){
+				logger.info(tableName+" totalPage:="+page);
+				break;
+			}else{
+				new Thread(new EsImportDataThread(elasticSearchService, ElasticSearchService.QQ_INDEX,tableName, nextDatas)).start();
+			}
+			
+		}
 	}
 
 }

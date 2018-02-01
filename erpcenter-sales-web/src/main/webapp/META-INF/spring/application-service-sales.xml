@@ -18,7 +18,6 @@
 		<property name="visitUrl" value="${qq.visitinfo.url}"/>
 	</bean>
 	
-	
 	<bean id="startDoJob" class="com.man.erpcenter.sales.biz.manager.StartDoJob">
 	</bean>
 	 
@@ -26,8 +25,8 @@
 
 	<bean id="qqPrimaryKeyManager" class="com.man.erpcenter.sales.biz.manager.QqPrimaryKeyManager">
 	</bean>
-	-->
 	
+	-->
 	<bean id="elasticSearchManager" class="com.man.erpcenter.sales.biz.manager.ElasticSearchManager">
 	</bean>
 	
