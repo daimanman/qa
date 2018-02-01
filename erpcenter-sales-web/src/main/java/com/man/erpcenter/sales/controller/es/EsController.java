@@ -43,7 +43,7 @@ public class EsController  extends BaseController {
 		if(!"".equals(tableName) ){
 			if(tableMap.get(tableName) == null || !tableMap.get(tableName)){
 				tableMap.put(tableName, true);
-				elasticSearchManager.importMySqlData01(tableName);
+				elasticSearchManager.importMySqlData02(tableName);
 			}
 			
 		}

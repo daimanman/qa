@@ -43,5 +43,9 @@ public interface QuserInfoPoMapper {
 	public List<Map<String, Object>> queryList(Map<String, Object> bizParams);
 
 	public int queryListCount(Map<String, Object> bizParams);
+	
+	public List<Map<String,Object>> queryWithIdRange(Map<String,Object> bizParams);
+	
+	public Map<String,Object> getMaxMinId(Map<String,Object> bizParams);
 
 }

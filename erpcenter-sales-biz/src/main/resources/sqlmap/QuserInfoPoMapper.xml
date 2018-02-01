@@ -286,6 +286,19 @@
 		select count(1) from ${tableName} a
 	</select>
 	
+	<select id="getMaxMinId" parameterType="map" resultType="map">
+		<![CDATA[
+			select max(id) as maxId,min(id) as minId from ${tableName}
+		]]>
+	</select>
+	
+	<select id="queryWithIdRange" parameterType="map" resultType="map">
+		<![CDATA[
+			select * from ${tableName} where id >= #{startId} and id <=#{endId}
+		]]>
+	</select>
+		
+	
 
 
 

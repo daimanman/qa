@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.man.erpcenter.common.utils.ObjectUtil;
 import com.man.erpcenter.elasticsearch.service.ElasticSearchService;
 import com.man.erpcenter.sales.biz.job.EsImportDataThread;
 import com.man.erpcenter.sales.biz.mapper.QuserInfoPoMapper;
@@ -161,6 +162,35 @@ public class ElasticSearchManager {
 				new Thread(new EsImportDataThread(elasticSearchService, ElasticSearchService.QQ_INDEX,tableName, nextDatas)).start();
 			}
 			
+		}
+	}
+	
+	public void importMySqlData02(String tableName){
+		int pageSize = 30000;
+		Map<String,Object> queryParams = new HashMap<String,Object>();
+		queryParams.put("tableName", tableName);
+		Map<String,Object> idMap = infoMapper.getMaxMinId(queryParams);
+		long minId = ObjectUtil.parseLong(idMap.get("minId"));
+		long maxId = ObjectUtil.parseLong(idMap.get("maxId"));
+		
+		long startId = minId;
+		for(;startId <= maxId;){
+			queryParams.put("startId",startId);
+			long endId = startId+30000-1;
+			queryParams.put("endId", endId);
+			logger.info(tableName+" get data from "+startId+" to "+endId);
+			List<Map<String,Object>> datas  = infoMapper.queryWithIdRange(queryParams);
+			if(datas == null || datas.size() == 0){
+				break;
+			}else{
+				new Thread(new EsImportDataThread(elasticSearchService, ElasticSearchService.QQ_INDEX,tableName, datas)).start();
+			}
+			startId = endId+1;
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
