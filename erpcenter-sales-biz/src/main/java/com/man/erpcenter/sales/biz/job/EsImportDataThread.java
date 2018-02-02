@@ -73,9 +73,13 @@ public class EsImportDataThread implements Runnable {
 	@Override
 	public void run() {
 			if(null != elasticSearchService  && datas != null && datas.size() > 0){
-				logger.error(type+"starttime "+System.currentTimeMillis()+"");
+				long startTime = System.currentTimeMillis();
+				String threadName = Thread.currentThread().getName();
+				//logger.error(threadName+" "+type+"starttime "+startTime+"");
 				elasticSearchService.multiIndex(getIndex(), getType(), getDatas(), true);
-				logger.error(type+" endtime "+System.currentTimeMillis()+"");
+				long endTime = System.currentTimeMillis();
+				//logger.error(threadName+" "+type+" endtime "+endTime+"");
+				logger.error(threadName+" spent time "+(endTime-startTime)+" ms ");
 			}
 	}
 

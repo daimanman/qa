@@ -1,5 +1,6 @@
 package com.man.erpcenter.elasticsearch.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,14 +13,16 @@ import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.get.MultiGetItemResponse;
 import org.elasticsearch.action.get.MultiGetRequestBuilder;
 import org.elasticsearch.action.index.IndexRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.man.erpcenter.common.utils.IDGenerator;
-import com.man.erpcenter.common.utils.IdWorker;
 import com.man.erpcenter.common.utils.ObjectUtil;
+import com.man.erpcenter.elasticsearch.query.Criterion;
 import com.man.erpcenter.elasticsearch.service.ElasticSearchService;
 
 public class ElasticSearchServiceImpl implements ElasticSearchService {
@@ -288,6 +291,34 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		// requestBuilder.setSource(mapping.toJSONString(), XContentType.JSON);
 		// return requestBuilder.execute().actionGet().isAcknowledged();
 		return false;
+	}
+
+	@Override
+	public Map<String, Object> filterForObject(String index, String type, Criterion criterion) {
+
+		return null;
+	}
+
+	@Override
+	public long count(String[] indexes, String[] types, Criterion criterion) {
+		return 0;
+	}
+
+	/**
+	 * 获取文档内容
+	 *
+	 * @param response
+	 *            {@link SearchResponse}
+	 * @return 文档列表
+	 */
+	private List<Map<String, Object>> getDocContent(SearchResponse response) {
+		List<Map<String, Object>> docList = new ArrayList<>();
+		for (SearchHit hit : response.getHits()) {
+			Map<String, Object> doc = hit.getSource();
+			doc.put(ID_NAME, hit.getId());
+			docList.add(doc);
+		}
+		return docList;
 	}
 
 }

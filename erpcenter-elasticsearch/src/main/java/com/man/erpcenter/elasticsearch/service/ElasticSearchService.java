@@ -3,11 +3,13 @@ package com.man.erpcenter.elasticsearch.service;
 import java.util.List;
 import java.util.Map;
 
+import com.man.erpcenter.elasticsearch.query.Criterion;
+
 public interface ElasticSearchService {
 	String ID_NAME = "uuid"; // 主键属性名
-	
+
 	String QQ_INDEX = "qq_alias";
-	String QQ_USER_TYPE="qq_user";
+	String QQ_USER_TYPE = "qq_user";
 
 	/**
 	 * 索引文档
@@ -79,8 +81,9 @@ public interface ElasticSearchService {
 	 *            是否刷新
 	 */
 	List<Map<String, Object>> multiIndex(String index, String type, List<Map<String, Object>> docList, boolean refresh);
-	
-	List<Map<String, Object>> multiIndex(String index, String type, List<Map<String, Object>> docList, boolean refresh,String idProp);
+
+	List<Map<String, Object>> multiIndex(String index, String type, List<Map<String, Object>> docList, boolean refresh,
+			String idProp);
 
 	/**
 	 * 批量更新文档
@@ -136,5 +139,31 @@ public interface ElasticSearchService {
 	 * @return 是否成功标识
 	 */
 	boolean setMetadata(String index, String type, String metadataStr);
+
+	/**
+	 * 过滤查找文档
+	 *
+	 * @param index
+	 *            索引
+	 * @param type
+	 *            类型
+	 * @param criterion
+	 *            查询条件
+	 * @return 文档
+	 */
+	Map<String, Object> filterForObject(String index, String type, Criterion criterion);
+
+	/**
+	 * 统计个数
+	 *
+	 * @param indexes
+	 *            索引数组
+	 * @param types
+	 *            类型数组
+	 * @param criterion
+	 *            查询条件
+	 * @return 个数
+	 */
+	long count(String[] indexes, String[] types, Criterion criterion);
 
 }
