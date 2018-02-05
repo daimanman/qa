@@ -13,6 +13,7 @@ import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.get.MultiGetItemResponse;
 import org.elasticsearch.action.get.MultiGetRequestBuilder;
 import org.elasticsearch.action.index.IndexRequestBuilder;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
@@ -20,8 +21,11 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.man.erpcenter.common.pageinfo.PageResult;
 import com.man.erpcenter.common.utils.IDGenerator;
 import com.man.erpcenter.common.utils.ObjectUtil;
+import com.man.erpcenter.elasticsearch.basequery.QueryBuilderParser;
+import com.man.erpcenter.elasticsearch.basequery.QueryItem;
 import com.man.erpcenter.elasticsearch.query.Criterion;
 import com.man.erpcenter.elasticsearch.service.ElasticSearchService;
 
@@ -320,5 +324,40 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		}
 		return docList;
 	}
+
+	/**
+	 * 查询文档列表
+	 * @param index
+	 * @param type
+	 * @param size
+	 * @param queryParams
+	 * @return
+	 */
+	@Override
+	public List<Map<String, Object>> filterList(String index, String type, int size, List<QueryItem> queryParams) {
+		SearchRequestBuilder searchRequest = client.prepareSearch(index).setSize(size).setTypes(type)
+				.setPostFilter(new QueryBuilderParser().parseQueryItems(queryParams));
+		return getDocContent(searchRequest.get());
+	}
+
+	/**
+	 * 分页获取数据
+	 */
+	@Override
+	public PageResult<Map<String, Object>> filterPage(String index, String type, int page, int pageSize,
+			List<QueryItem> queryParams) {
+		PageResult<Map<String,Object>> pageResult = new PageResult<Map<String,Object>>();
+		page = page > 0 ? page : 1;
+		pageSize  = pageSize > 0 ? pageSize : 20;
+		SearchRequestBuilder searchRequest = client.prepareSearch(index).setTypes(type)
+				.setPostFilter(new QueryBuilderParser().parseQueryItems(queryParams));
+		searchRequest.setFrom((page-1)*pageSize).setSize(pageSize);
+		 SearchResponse searchResponse = searchRequest.get();
+		 pageResult.setTotal(searchResponse.getHits().getTotalHits());
+		 pageResult.setDatas(getDocContent(searchResponse));
+		return pageResult;
+	}
+	
+	
 
 }
