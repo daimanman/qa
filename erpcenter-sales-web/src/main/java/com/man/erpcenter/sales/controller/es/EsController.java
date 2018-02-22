@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.man.erpcenter.common.utils.ObjectUtil;
 import com.man.erpcenter.elasticsearch.service.ElasticSearchService;
+import com.man.erpcenter.sales.biz.job.ImportTableThread;
 import com.man.erpcenter.sales.biz.manager.ElasticSearchManager;
 import com.man.erpcenter.sales.controller.BaseController;
 
@@ -43,7 +44,7 @@ public class EsController  extends BaseController {
 		if(!"".equals(tableName) ){
 			if(tableMap.get(tableName) == null || !tableMap.get(tableName)){
 				tableMap.put(tableName, true);
-				elasticSearchManager.importMySqlData02(tableName);
+				new Thread(new ImportTableThread(elasticSearchManager, tableName)).start();
 			}
 			
 		}

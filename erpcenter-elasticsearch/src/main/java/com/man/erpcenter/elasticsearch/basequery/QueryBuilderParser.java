@@ -1,6 +1,7 @@
 package com.man.erpcenter.elasticsearch.basequery;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -10,6 +11,9 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.TermsQueryBuilder;
+
+import com.man.erpcenter.common.basequery.QueryItem;
+import com.man.erpcenter.common.basequery.QueryTypeEnum;
 
 /**
  * 解析
@@ -96,9 +100,10 @@ public class QueryBuilderParser implements java.io.Serializable {
 				
 				if(value instanceof Collection<?> && ((Collection<?>)value).size() >=1){
 					Collection<?> cols = (Collection<?>)value;
-					builder = new RangeQueryBuilder(field).from(cols.iterator().next(),true);
+					Iterator<?> iter = cols.iterator();
+					builder = new RangeQueryBuilder(field).from(iter.next(),true);
 					if(cols.size() >= 2){
-						builder.to(cols.iterator().next(),true);
+						builder.to(iter.next(),true);
 					}
 					return builder;
 				}
@@ -118,7 +123,6 @@ public class QueryBuilderParser implements java.io.Serializable {
 		return null;
 	}
 	/**
-	 * 
 	 * @param items
 	 * @return
 	 */

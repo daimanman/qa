@@ -19,18 +19,26 @@ import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.man.erpcenter.common.basequery.QueryItem;
+import com.man.erpcenter.common.pageinfo.QueryParams;
 import com.man.erpcenter.common.pageinfo.PageResult;
+import com.man.erpcenter.common.pageinfo.SortParams;
 import com.man.erpcenter.common.utils.IDGenerator;
 import com.man.erpcenter.common.utils.ObjectUtil;
 import com.man.erpcenter.elasticsearch.basequery.QueryBuilderParser;
-import com.man.erpcenter.elasticsearch.basequery.QueryItem;
 import com.man.erpcenter.elasticsearch.query.Criterion;
 import com.man.erpcenter.elasticsearch.service.ElasticSearchService;
 
 public class ElasticSearchServiceImpl implements ElasticSearchService {
 
+	private Logger logger  = LoggerFactory.getLogger(ElasticSearchServiceImpl.class);
+	
 	@Autowired
 	private TransportClient client;
 
@@ -319,14 +327,34 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		List<Map<String, Object>> docList = new ArrayList<>();
 		for (SearchHit hit : response.getHits()) {
 			Map<String, Object> doc = hit.getSource();
-			doc.put(ID_NAME, hit.getId());
+			doc.put("_index", hit.getIndex());
+			doc.put("_type", hit.getType());
 			docList.add(doc);
 		}
 		return docList;
 	}
 
+	private void setSort(SearchRequestBuilder searchRequest, List<SortParams> sorts) {
+		
+		//TODO 需要判断字段是否支持排序,全文检索的字段不能参与排序处理
+		
+		// 是否需要排序
+		if (null != sorts && sorts.size() > 0) {
+			// 设置排序字段
+			for (SortParams sort : sorts) {
+				if (sort.getField() != null && !sort.getField().trim().equals("") && sort.getSort() != null
+						&& (sort.getSort().toLowerCase().equals("asc")
+								|| sort.getSort().toLowerCase().equals("desc"))) {
+					searchRequest
+							.addSort(new FieldSortBuilder(sort.getField()).order(SortOrder.valueOf(sort.getSort())));
+				}
+			}
+		}
+	}
+
 	/**
 	 * 查询文档列表
+	 * 
 	 * @param index
 	 * @param type
 	 * @param size
@@ -334,9 +362,11 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 	 * @return
 	 */
 	@Override
-	public List<Map<String, Object>> filterList(String index, String type, int size, List<QueryItem> queryParams) {
+	public List<Map<String, Object>> filterList(String index, String type, int size, List<QueryItem> queryParams,
+			List<SortParams> sorts) {
 		SearchRequestBuilder searchRequest = client.prepareSearch(index).setSize(size).setTypes(type)
 				.setPostFilter(new QueryBuilderParser().parseQueryItems(queryParams));
+		setSort(searchRequest, sorts);
 		return getDocContent(searchRequest.get());
 	}
 
@@ -344,20 +374,30 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 	 * 分页获取数据
 	 */
 	@Override
-	public PageResult<Map<String, Object>> filterPage(String index, String type, int page, int pageSize,
-			List<QueryItem> queryParams) {
-		PageResult<Map<String,Object>> pageResult = new PageResult<Map<String,Object>>();
-		page = page > 0 ? page : 1;
-		pageSize  = pageSize > 0 ? pageSize : 20;
+	public PageResult<Map<String, Object>> filterPage(String index, String type, QueryParams queryParams
+			) {
+		PageResult<Map<String, Object>> pageResult = new PageResult<Map<String, Object>>();
 		SearchRequestBuilder searchRequest = client.prepareSearch(index).setTypes(type)
-				.setPostFilter(new QueryBuilderParser().parseQueryItems(queryParams));
-		searchRequest.setFrom((page-1)*pageSize).setSize(pageSize);
-		 SearchResponse searchResponse = searchRequest.get();
-		 pageResult.setTotal(searchResponse.getHits().getTotalHits());
-		 pageResult.setDatas(getDocContent(searchResponse));
+				.setPostFilter(new QueryBuilderParser().parseQueryItems(queryParams.getQueryItems()));
+		searchRequest.setFrom(queryParams.getOffset()).setSize(queryParams.getPageSize());
+		setSort(searchRequest, queryParams.getSorts());
+		SearchResponse searchResponse = searchRequest.get();
+		pageResult.setTotal(searchResponse.getHits().getTotalHits());
+		pageResult.setPage(queryParams.getPage());
+		pageResult.setPageSize(queryParams.getPageSize());
+		pageResult.setDatas(getDocContent(searchResponse));
 		return pageResult;
 	}
-	
-	
+
+	@Override
+	public Map<String, Object> filterOneObj(String index, String type, QueryItem queryItem) {
+		List<QueryItem> items = new ArrayList<QueryItem>();
+		items.add(queryItem);
+		List<Map<String,Object>> datas = filterList(index, type, 1, items, null);
+		if(datas != null && datas.size() > 0){
+			return datas.get(0);
+		}
+		return null;
+	}
 
 }

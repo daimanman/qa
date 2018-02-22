@@ -3,8 +3,10 @@ package com.man.erpcenter.elasticsearch.service;
 import java.util.List;
 import java.util.Map;
 
+import com.man.erpcenter.common.basequery.QueryItem;
+import com.man.erpcenter.common.pageinfo.QueryParams;
 import com.man.erpcenter.common.pageinfo.PageResult;
-import com.man.erpcenter.elasticsearch.basequery.QueryItem;
+import com.man.erpcenter.common.pageinfo.SortParams;
 import com.man.erpcenter.elasticsearch.query.Criterion;
 
 public interface ElasticSearchService {
@@ -176,7 +178,16 @@ public interface ElasticSearchService {
 	 * @param queryParams
 	 * @return
 	 */
-	List<Map<String,Object>> filterList(String index,String type,int size,List<QueryItem> queryParams);
+	List<Map<String,Object>> filterList(String index,String type,int size,List<QueryItem> queryParams,List<SortParams> sorts);
+	
+	/**
+	 * 查询单个
+	 * @param index
+	 * @param type
+	 * @param queryItem
+	 * @return
+	 */
+	Map<String,Object> filterOneObj(String index,String type,QueryItem queryItem);
 	
 	/**
 	 * 分页获取文档信息
@@ -187,6 +198,6 @@ public interface ElasticSearchService {
 	 * @param queryParams
 	 * @return
 	 */
-	PageResult<Map<String,Object>> filterPage(String index,String type,int page,int pageSize,List<QueryItem> queryParams);
+	PageResult<Map<String,Object>> filterPage(String index,String type,QueryParams queryParams);
 
 }

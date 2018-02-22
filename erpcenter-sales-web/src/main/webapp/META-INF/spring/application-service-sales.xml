@@ -30,6 +30,9 @@
 	<bean id="elasticSearchManager" class="com.man.erpcenter.sales.biz.manager.ElasticSearchManager">
 	</bean>
 	
+	<bean id="quserInfoService" class="com.man.erpcenter.sales.biz.service.es.QuserInfoServiceEsImpl">
+	</bean>
+	
 	
 	 
 	

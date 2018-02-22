@@ -1,4 +1,4 @@
-package com.man.erpcenter.elasticsearch.basequery;
+package com.man.erpcenter.common.basequery;
 
 /**
  * 单个查询参数类型

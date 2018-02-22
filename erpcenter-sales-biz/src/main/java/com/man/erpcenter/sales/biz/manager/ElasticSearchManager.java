@@ -22,6 +22,7 @@ public class ElasticSearchManager {
 	
 	@Autowired
 	private QuserInfoPoMapper infoMapper;
+	
 
 	public ElasticSearchService getElasticSearchService() {
 		return elasticSearchService;
@@ -172,6 +173,7 @@ public class ElasticSearchManager {
 		Map<String,Object> idMap = infoMapper.getMaxMinId(queryParams);
 		long minId = ObjectUtil.parseLong(idMap.get("minId"));
 		long maxId = ObjectUtil.parseLong(idMap.get("maxId"));
+		String indexName = tableName+"_idx";
 		
 		long startId = minId;
 		for(;startId <= maxId;){
@@ -183,14 +185,16 @@ public class ElasticSearchManager {
 			if(datas == null || datas.size() == 0){
 				break;
 			}else{
-				new Thread(new EsImportDataThread(elasticSearchService, ElasticSearchService.QQ_INDEX,tableName, datas)).start();
+				new Thread(new EsImportDataThread(elasticSearchService,indexName,tableName, datas)).start();
 			}
 			startId = endId+1;
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			
+//			try {
+//				Thread.sleep(3000);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+			
 		}
 	}
 

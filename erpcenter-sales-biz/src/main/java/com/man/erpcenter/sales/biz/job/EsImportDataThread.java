@@ -79,7 +79,7 @@ public class EsImportDataThread implements Runnable {
 				elasticSearchService.multiIndex(getIndex(), getType(), getDatas(), true);
 				long endTime = System.currentTimeMillis();
 				//logger.error(threadName+" "+type+" endtime "+endTime+"");
-				logger.error(threadName+" spent time "+(endTime-startTime)+" ms ");
+				logger.error(threadName+"  "+getType()+" spent time "+(endTime-startTime)+" ms ");
 			}
 	}
 
