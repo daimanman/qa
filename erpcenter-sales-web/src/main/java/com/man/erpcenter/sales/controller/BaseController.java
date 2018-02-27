@@ -86,6 +86,7 @@ public class BaseController {
 		} finally {
 			paramMap.put("rows",ObjectUtil.parseInt(paramMap.get("rows"),15));
 			paramMap.put("page",ObjectUtil.parseInt(paramMap.get("page"),1));
+			paramMap.put("pageSize",ObjectUtil.parseInt(paramMap.get("rows"),15));
 			paramMap.put("start",
 					(ObjectUtil.parseInt(paramMap.get("page"),1) - 1) * ObjectUtil.parseInt(paramMap.get("rows"),15));
 			

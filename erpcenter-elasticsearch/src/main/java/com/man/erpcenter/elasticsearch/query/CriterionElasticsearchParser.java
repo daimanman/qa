@@ -7,6 +7,7 @@ import org.elasticsearch.index.query.ExistsQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.PrefixQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.TermsQueryBuilder;
@@ -107,6 +108,7 @@ public class CriterionElasticsearchParser extends CriterionParser<QueryBuilder> 
             default:
                 throw new RuntimeException(String.format("逻辑运算符格式不正确：%s", logic.name()));
         }
+       
         return boolQueryBuilder;
     }
 }

@@ -27,11 +27,22 @@
 	</bean>
 	
 	-->
+	<bean id="msgInfoService" class="com.man.erpcenter.sales.biz.service.MsgInfoServiceImpl" />
 	<bean id="elasticSearchManager" class="com.man.erpcenter.sales.biz.manager.ElasticSearchManager">
 	</bean>
 	
 	<bean id="quserInfoService" class="com.man.erpcenter.sales.biz.service.es.QuserInfoServiceEsImpl">
 	</bean>
+	
+	<bean id="qemotInfoService" class="com.man.erpcenter.sales.biz.service.es.QemotInfoServiceImpl">
+	</bean>
+	
+	<bean id="qphotoInfoService" class="com.man.erpcenter.sales.biz.service.es.QphotoInfoServiceImpl">
+	</bean>
+	
+	
+	
+	
 	
 	
 	 

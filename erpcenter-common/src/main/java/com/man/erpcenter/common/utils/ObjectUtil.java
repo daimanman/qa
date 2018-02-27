@@ -25,7 +25,7 @@ public class ObjectUtil {
 			try{
 				num = Integer.parseInt(src.toString());
 			}catch(Exception e){
-				e.printStackTrace();
+				//e.printStackTrace();
 				num = null;
 			}
 			

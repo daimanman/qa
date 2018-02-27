@@ -30,4 +30,13 @@ public class SortParams implements java.io.Serializable {
 		this.sort = sort;
 	}
 
+	public SortParams(String field, String sort) {
+		this.field = field;
+		this.sort = sort;
+	}
+	public SortParams() {
+		
+	}
+	
+
 }

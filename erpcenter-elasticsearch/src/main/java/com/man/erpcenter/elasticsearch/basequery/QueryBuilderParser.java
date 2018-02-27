@@ -8,12 +8,14 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.ExistsQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.TermsQueryBuilder;
 
 import com.man.erpcenter.common.basequery.QueryItem;
 import com.man.erpcenter.common.basequery.QueryTypeEnum;
+import com.man.erpcenter.common.constants.IdxConstant;
 
 /**
  * 解析
@@ -25,6 +27,11 @@ public class QueryBuilderParser implements java.io.Serializable {
 
 	private static final long serialVersionUID = 3508279471042756280L;
 
+	/**
+	 * 单个字段的简单解析查询
+	 * @param queryItem
+	 * @return
+	 */
 	public QueryBuilder parseQueryBuilder(QueryItem queryItem) {
 		if (queryItem == null) {
 			return null;
@@ -122,6 +129,22 @@ public class QueryBuilderParser implements java.io.Serializable {
 		}
 		return null;
 	}
+	
+	private QueryBuilder parseMultiField(QueryItem item,String[] fields){
+		if(null != item && fields != null && fields.length > 0){
+			BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+			for(String field:fields){
+				item.field = field.trim();
+				if(item.andOr == IdxConstant.OR){
+					boolQuery.should(parseQueryBuilder(item));
+				}else{
+					boolQuery.must(parseQueryBuilder(item));
+				}
+			}
+			return boolQuery;
+		}
+		return null;
+	}
 	/**
 	 * @param items
 	 * @return
@@ -130,7 +153,20 @@ public class QueryBuilderParser implements java.io.Serializable {
 		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 		if(null != items && items.size() > 0){
 			for(QueryItem item:items){
-				boolQueryBuilder.filter(parseQueryBuilder(item));
+				String fields = item.field;
+				if(null == fields || "".equals(fields.trim())){
+					continue;
+				}
+				//拆分
+				String[] fieldsArr = fields.split("\\W");
+				if(fieldsArr != null && fieldsArr.length > 1){
+					//符合匹配
+					boolQueryBuilder.filter(parseMultiField(item,fieldsArr));
+				}else{
+					//简单匹配单个字段
+					boolQueryBuilder.filter(parseQueryBuilder(item));
+				}
+				
 			}
 		}
 		return boolQueryBuilder;

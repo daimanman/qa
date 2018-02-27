@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequestBuilder;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetRequestBuilder;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.get.MultiGetItemResponse;
@@ -37,8 +39,8 @@ import com.man.erpcenter.elasticsearch.service.ElasticSearchService;
 
 public class ElasticSearchServiceImpl implements ElasticSearchService {
 
-	private Logger logger  = LoggerFactory.getLogger(ElasticSearchServiceImpl.class);
-	
+	private Logger logger = LoggerFactory.getLogger(ElasticSearchServiceImpl.class);
+
 	@Autowired
 	private TransportClient client;
 
@@ -133,7 +135,6 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		if (refresh) {
 			deleteRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
 		}
-		deleteRequest.get();
 	}
 
 	/**
@@ -160,6 +161,10 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 			}
 			if (refresh) {
 				bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
+			}
+			BulkResponse bulkResponse = bulkRequest.get();
+			if (bulkResponse.hasFailures()) {
+				logger.error(bulkResponse.buildFailureMessage());
 			}
 			bulkRequest.get();
 		}
@@ -335,9 +340,9 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 	}
 
 	private void setSort(SearchRequestBuilder searchRequest, List<SortParams> sorts) {
-		
-		//TODO 需要判断字段是否支持排序,全文检索的字段不能参与排序处理
-		
+
+		// TODO 需要判断字段是否支持排序,全文检索的字段不能参与排序处理
+
 		// 是否需要排序
 		if (null != sorts && sorts.size() > 0) {
 			// 设置排序字段
@@ -345,8 +350,8 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 				if (sort.getField() != null && !sort.getField().trim().equals("") && sort.getSort() != null
 						&& (sort.getSort().toLowerCase().equals("asc")
 								|| sort.getSort().toLowerCase().equals("desc"))) {
-					searchRequest
-							.addSort(new FieldSortBuilder(sort.getField()).order(SortOrder.valueOf(sort.getSort())));
+					searchRequest.addSort(new FieldSortBuilder(sort.getField())
+							.order(SortOrder.valueOf(sort.getSort().toUpperCase())));
 				}
 			}
 		}
@@ -374,8 +379,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 	 * 分页获取数据
 	 */
 	@Override
-	public PageResult<Map<String, Object>> filterPage(String index, String type, QueryParams queryParams
-			) {
+	public PageResult<Map<String, Object>> filterPage(String index, String type, QueryParams queryParams) {
 		PageResult<Map<String, Object>> pageResult = new PageResult<Map<String, Object>>();
 		SearchRequestBuilder searchRequest = client.prepareSearch(index).setTypes(type)
 				.setPostFilter(new QueryBuilderParser().parseQueryItems(queryParams.getQueryItems()));
@@ -393,8 +397,8 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 	public Map<String, Object> filterOneObj(String index, String type, QueryItem queryItem) {
 		List<QueryItem> items = new ArrayList<QueryItem>();
 		items.add(queryItem);
-		List<Map<String,Object>> datas = filterList(index, type, 1, items, null);
-		if(datas != null && datas.size() > 0){
+		List<Map<String, Object>> datas = filterList(index, type, 1, items, null);
+		if (datas != null && datas.size() > 0) {
 			return datas.get(0);
 		}
 		return null;

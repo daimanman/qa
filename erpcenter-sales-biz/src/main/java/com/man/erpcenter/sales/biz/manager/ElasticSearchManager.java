@@ -167,7 +167,7 @@ public class ElasticSearchManager {
 	}
 	
 	public void importMySqlData02(String tableName){
-		int pageSize = 30000;
+		int pageSize = 10000;
 		Map<String,Object> queryParams = new HashMap<String,Object>();
 		queryParams.put("tableName", tableName);
 		Map<String,Object> idMap = infoMapper.getMaxMinId(queryParams);
@@ -178,7 +178,7 @@ public class ElasticSearchManager {
 		long startId = minId;
 		for(;startId <= maxId;){
 			queryParams.put("startId",startId);
-			long endId = startId+30000-1;
+			long endId = startId+pageSize-1;
 			queryParams.put("endId", endId);
 			logger.info(tableName+" get data from "+startId+" to "+endId);
 			List<Map<String,Object>> datas  = infoMapper.queryWithIdRange(queryParams);
@@ -189,13 +189,17 @@ public class ElasticSearchManager {
 			}
 			startId = endId+1;
 			
-//			try {
-//				Thread.sleep(3000);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			
 		}
+	}
+	
+	public void testEmot(){
+		elasticSearchService.multiIndex("qemot_info_idx2","qemot_info", infoMapper.getEmots(), false);
 	}
 
 }

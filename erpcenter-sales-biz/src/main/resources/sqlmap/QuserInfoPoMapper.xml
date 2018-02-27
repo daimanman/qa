@@ -297,6 +297,10 @@
 			select * from ${tableName} where id >= #{startId} and id <=#{endId}
 		]]>
 	</select>
+	
+	<select id="getEmots" resultType="map">
+  	select * from qemot_info where id in (8762528,8762535,8762540,8762560,8762567,8762569)
+  </select>
 		
 	
 

@@ -37,7 +37,7 @@ public class EsController  extends BaseController {
 		sendJson(response,elasticSearchManager.get(ElasticSearchService.QQ_INDEX,ElasticSearchService.QQ_USER_TYPE, id));
 	}
 	
-	@RequestMapping("/importMySqlData")
+	@RequestMapping("/importMySqlData1")
 	public void importMySqlData(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		Map<String,Object> bizParams = getReqParams(request);
 		String tableName = ObjectUtil.toString(bizParams.get("tableName"));
@@ -50,6 +50,14 @@ public class EsController  extends BaseController {
 		}
 		sendJson(response, "is ok");
 	}
+	
+	@RequestMapping("/testEmot")
+	public void testEmot(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		elasticSearchManager.testEmot();
+		sendJson(response, "is ok");
+	}
+	
+	
 	
 	@RequestMapping("/log")
 	public void log(HttpServletRequest request,HttpServletResponse response) throws IOException{

@@ -24,6 +24,11 @@ public class QueryItem implements java.io.Serializable {
 	 */
 	public String matchType = QueryTypeEnum.IN.getType();
 	
+	/**
+	 * 多字段时的逻辑运算
+	 */
+	public int andOr ;
+	
 	
 
 	public String getField() {
@@ -59,5 +64,26 @@ public class QueryItem implements java.io.Serializable {
 		return (field != null && !field.trim().equals("")) && 
 			(value != null && !value.toString().trim().equals(""));
 	}
+
+	public int getAndOr() {
+		return andOr;
+	}
+
+	public void setAndOr(int andOr) {
+		this.andOr = andOr;
+	}
+
+	public QueryItem(String field, Object value, String matchType) {
+		super();
+		this.field = field;
+		this.value = value;
+		this.matchType = matchType;
+	}
+
+	public QueryItem() {
+		
+	}
+	
+	
 	
 }
