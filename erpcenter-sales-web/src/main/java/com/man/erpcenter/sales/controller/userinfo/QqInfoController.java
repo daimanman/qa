@@ -21,6 +21,7 @@ import com.man.erpcenter.sales.client.service.QemotInfoService;
 import com.man.erpcenter.sales.client.service.QphotoInfoService;
 import com.man.erpcenter.sales.client.service.QuserInfoService;
 import com.man.erpcenter.sales.controller.BaseController;
+import com.man.erpcenter.sales.util.DubboCallbackUtil;
 
 @Controller
 @RequestMapping("/qes")
@@ -67,6 +68,13 @@ public class QqInfoController extends BaseController {
 	@RequestMapping("/getDubo")
 	public void getDubo(HttpServletRequest request, HttpServletResponse response) throws IOException {
 	
+		logger.info(demoServiceRef.sayHello(100));
+		sendJson(response, demoServiceRef.getEmots());
+	}
+	
+	@RequestMapping("/getDubo1")
+	public void getDubo1(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Object result = DubboCallbackUtil.invoke("com.dev.ym.service.DemoService","getEmots", null, "127.0.0.1:2183","1.1.dev");
 		logger.info(demoServiceRef.sayHello(100));
 		sendJson(response, demoServiceRef.getEmots());
 	}
