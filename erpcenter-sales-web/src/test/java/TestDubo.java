@@ -45,9 +45,15 @@ public class TestDubo {
 		
 		Object o2 = service.$invoke("sayHello", new String[]{"int"},new Object[]{12});
 		
+		Dog dog = new Dog();
+		dog.setId(12);
+		dog.setName("DOG007");
+		Object o3 = service.$invoke("showDog", new String[]{"com.dev.ym.po.Dog"},new Object[]{dog});
+		
 		System.out.println(o);
 		System.out.println(os);
 		System.out.println(o2);
+		System.out.println(o3);
 		
 		
 		
